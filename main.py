@@ -37,7 +37,7 @@ def config():
 def log():
     return current_type.log
 
-def aggregator_init()
+def aggregator_init():
     print("aggregator start")
     app.register_blueprint(aggregator.aggregator_bp)
     with open('./config.json', 'r') as file:

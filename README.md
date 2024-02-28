@@ -97,6 +97,11 @@ Copy it under the directory of the this repo, and you should be able to use it b
 
 You can run the `seal.sh` to set it up.
 
+The examples to use the seal is included in the `5_ckks_basics.py`.
+
+Because the seal-python is using the pybind to bind the original c++ library, we are dealing with python objects wrapping the c++ objects.
+It's useful to use the `dir()` function to look at what methods are available for use.
+For example, after generating the `secret_key`, use the `dir(secret_key)` and we can find the `save`, `load` and `to_string` methods.
 
 ## test
 

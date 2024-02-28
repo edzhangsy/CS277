@@ -9,8 +9,8 @@ import client
 app = Flask(__name__)
 
 # the current_bp store the pointer to the current blueprint
-current_type = NULL
-current_bp = NULL
+current_type = None
+current_bp = None
 
 @route("/config", methods=['POST'])
 def config():
@@ -19,7 +19,7 @@ def config():
     config = request.json
     print(config)
     config_type = config.get("type")
-    if current_bp != NULL:
+    if !current_bp:
         app.blueprint.pop(current_bp)
 
     if config_type == 'client':

@@ -45,6 +45,7 @@ To be convinient, let's use the node14, "10.10.1.15" as the aggregator.
 
 *Remember not to add unless files when you commit.*
 
+*Remember to start the all the clients first, then start the aggregator*
 ## SEAL
 
 seal library should be compiled first.

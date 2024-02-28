@@ -5,7 +5,7 @@ client_bp = Blueprint('client', __name__)
 log = {}
 config = {}
 
-@client_bp.route('/hello')
+@client_bp.route('/c/hello')
 def hello():
     # Access the global value
     return 'hello from the client'

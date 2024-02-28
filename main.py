@@ -10,44 +10,49 @@ app = Flask(__name__)
 
 # the current_bp store the pointer to the current blueprint
 current_type = None
-current_bp = None
 
-@route("/config", methods=['POST'])
+@app.route("/config", methods=['POST'])
 def config():
     # this interface will get a json dictionary from the server
     # should set up the encrypter, resolver, etc.
     config = request.json
-    print(config)
+    global current_type
     config_type = config.get("type")
-    if not current_bp:
-        app.blueprint.pop(current_bp)
-
+    print(config_type)
     if config_type == 'client':
         current_type = client
-        current_bp = client.client_bp
     elif config_type == 'switch':
         current_type = switch
-        current_bp = switch.switch_bp
     current_type.config = config
     current_type.init(config)
-    app.register_blueprint(current_bp)
     return "config transported"
     
-@route("/log", methods=['GET'])
+@app.route("/log", methods=['GET'])
 def log():
+    # add some guard here to guard current_type == None
+    global current_type
     return current_type.log
 
 def aggregator_init():
     print("aggregator start")
     app.register_blueprint(aggregator.aggregator_bp)
     with open('./config.json', 'r') as file:
-        config = json.load(file)
+        aggregator.config = json.load(file)
     # call the others
-    for key, value in config['others']:
-        response = requests.post("http://{key}/config", data=value)
+    print(aggregator.config)
+    for key, value in aggregator.config['others'].items():
+        print(key, value)
+        try:
+            response = requests.post(f"http://{key}:5000/config", json=value, timeout=0.5)
+            print(f"http://{key}:5000/config")
+            print(response)
+        except requests.exceptions.ConnectTimeout:
+            print(f"http://{key}:5000/config timeout")
 
     
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         aggregator_init()
-    app.run(debug=True)
+    app.register_blueprint(switch.switch_bp)
+    app.register_blueprint(client.client_bp)
+    app.run(debug=True, port=5000)

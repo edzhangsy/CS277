@@ -20,14 +20,14 @@
 		"10.10.1.3" : {
 			"type": "client",
 			"client_number": 4,
-			"index": 3,
+			"index": 2,
 			"key": "put public key here",
 			"send": "10.10.1.6"
 		},
 		"10.10.1.4" : {
 			"type": "client",
 			"client_number": 4,
-			"index": 4,
+			"index": 3,
 			"key": "put public key here",
 			"send": "10.10.1.6"
 		},

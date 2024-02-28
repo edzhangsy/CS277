@@ -8,3 +8,7 @@ log = {}
 @aggregator_bp.route('/a/hello')
 def hello():
     return 'hello from aggregator'
+
+@aggregator_bp.route('/a/receive')
+def receive():
+    pass

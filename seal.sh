@@ -26,4 +26,5 @@ python3 setup.py build_ext -i
 # Test
 cp seal.*.so examples
 cd examples
+mv ../CS277/5_ckks_basics.py .
 python3 4_bgv_basics.py

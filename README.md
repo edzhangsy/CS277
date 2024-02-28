@@ -103,6 +103,17 @@ Because the seal-python is using the pybind to bind the original c++ library, we
 It's useful to use the `dir()` function to look at what methods are available for use.
 For example, after generating the `secret_key`, use the `dir(secret_key)` and we can find the `save`, `load` and `to_string` methods.
 
+## ML Model Running on Pytorch
+
+For our ML model, we took an existing Pytorch implementation of a basic 2-layer neural network training on the MNIST dataset.
+
+We have made some modifications to the *mnist.py* file where it writes the weights and biases vectors into a json file allowing us to call SEAL and encrypt the training vectors directly with FHE.
+
+When we complete our Federated Learning model, the client will call the *replace_weights_mnist.py* where it will load the averaged weights returned by the Aggregator and resume training.
+
+![alt text](./images/mnist.png)
+*This image showcases the use of saving and loading our model parameters to resume training.*
+
 ## test
 
 I have added the `test.py`.

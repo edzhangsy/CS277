@@ -19,7 +19,7 @@ def config():
     config = request.json
     print(config)
     config_type = config.get("type")
-    if !current_bp:
+    if not current_bp:
         app.blueprint.pop(current_bp)
 
     if config_type == 'client':

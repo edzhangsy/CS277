@@ -40,9 +40,9 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
+            nn.Linear(28*28, 64),
             nn.ReLU(),
-            nn.Linear(512, 10)
+            nn.Linear(64, 10)
         )
 
     def forward(self, x):
@@ -99,8 +99,8 @@ for t in range(4):
 #    print(param)
 #    print(len(param))
 
-#for param_tensor in model.state_dict():
-#    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
+for param_tensor in model.state_dict():
+    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
 #    print(param_tensor, "\t", model.state_dict()[param_tensor])
 
 ### Standard serialized save

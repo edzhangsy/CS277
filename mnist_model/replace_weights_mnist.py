@@ -38,9 +38,9 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
+            nn.Linear(28*28, 64),
             nn.ReLU(),
-            nn.Linear(512, 10)
+            nn.Linear(64, 10)
         )
 
     def forward(self, x):
@@ -55,8 +55,26 @@ state_dict = model.state_dict()
 
 keys_list = ['linear_relu_stack.0.weight', 'linear_relu_stack.0.bias', 'linear_relu_stack.2.weight', 'linear_relu_stack.2.bias']
 
+#for count in range(len(keys_list)):
+#    with open('./state/torch_weights'+str(count)+'.json', 'r') as json_file:
+#        with torch.no_grad():
+#            for name, param in model.named_parameters():
+#                if keys_list[0] in name and count == 0:
+#                    param.copy_(torch.Tensor(ast.literal_eval(json_file.read())))
+#                    print(keys_list[0] + ' ---------- WE ARE HERE')
+#                if keys_list[1] in name and count == 1:
+#                    param.copy_(torch.Tensor(ast.literal_eval(json_file.read())))
+#                    print(keys_list[1] + ' ---------- WE ARE HERE')
+#                if keys_list[2] in name and count == 2:
+#                    param.copy_(torch.Tensor(ast.literal_eval(json_file.read())))
+#                    print(keys_list[2] + ' ---------- WE ARE HERE')
+#                if keys_list[3] in name and count == 3:
+#                    param.copy_(torch.Tensor(ast.literal_eval(json_file.read())))
+#                    print(keys_list[3] + ' ---------- WE ARE HERE')
+#        state_dict[keys_list[count]] = torch.Tensor(ast.literal_eval(json_file.read()))
+
 for count in range(len(keys_list)):
-    with open('./state/torch_weights'+str(count)+'.json', 'r') as json_file:
+    with open('./aggregate/ckks_weights'+str(count)+'.json', 'r') as json_file:
 #        with torch.no_grad():
 #            for name, param in model.named_parameters():
 #                if keys_list[0] in name and count == 0:

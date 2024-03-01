@@ -10,16 +10,16 @@ import json
 
 ### Grabbing MNIST data with torchvision datasets
 training_data = datasets.MNIST(
-   root = 'data',
-   train = True,
-   download = True,
-   transform = ToTensor()
+    root = 'data',
+    train = True,
+    download = True,
+    transform = ToTensor()
 )
 test_data = datasets.MNIST(
-   root = 'data',
-   train = False,
-   download = True,
-   transform = ToTensor()
+    root = 'data',
+    train = False,
+    download = True,
+    transform = ToTensor()
 )
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'

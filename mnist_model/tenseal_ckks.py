@@ -33,6 +33,17 @@ weight0 = []
 bias0 = []
 weight2 = []
 bias2 = []
+result0 = []
+result1 = []
+result2 = []
+result3 = []
+
+result_param = {
+    0: result0,
+    1: result1,
+    2: result2,
+    3: result3,
+}
 
 keys_list = ['linear_relu_stack.0.weight', 'linear_relu_stack.0.bias', 'linear_relu_stack.2.weight', 'linear_relu_stack.2.bias']
 
@@ -57,34 +68,34 @@ bias0_encrypted = ts.ckks_tensor(context, bias0)
 weight2_encrypted = ts.ckks_tensor(context, weight2)
 bias2_encrypted = ts.ckks_tensor(context, bias2)
 
-result0 = weight0_encrypted + weight0_encrypted
+result_param[0] = weight0_encrypted + weight0_encrypted
 #print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(weight0, weight0, decrypt(result0)))
-with open('./aggregate/ckks_weights0.json', 'w') as json_file:
-    json.dump(decrypt(result0), json_file)
+#with open('./aggregate/ckks_weights0.json', 'w') as json_file:
+#    json.dump(decrypt(result0), json_file)
 
-result1 = bias0_encrypted + bias0_encrypted
+result_param[1] = bias0_encrypted + bias0_encrypted
 #print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(bias0, bias0, decrypt(result1)))
-with open('./aggregate/ckks_weights1.json', 'w') as json_file:
-        json.dump(decrypt(result1), json_file)
+#with open('./aggregate/ckks_weights1.json', 'w') as json_file:
+#        json.dump(decrypt(result1), json_file)
 
-result2 = weight2_encrypted + weight2_encrypted
+result_param[2] = weight2_encrypted + weight2_encrypted
 #print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(weight2, weight2, decrypt(result2)))
-with open('./aggregate/ckks_weights2.json', 'w') as json_file:
-        json.dump(decrypt(result2), json_file)
+#with open('./aggregate/ckks_weights2.json', 'w') as json_file:
+#        json.dump(decrypt(result2), json_file)
 
-result3 = bias2_encrypted + bias2_encrypted
+result_param[3] = bias2_encrypted + bias2_encrypted
 #print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(bias2, bias2, decrypt(result3)))
-with open('./aggregate/ckks_weights3.json', 'w') as json_file:
-    json.dump(decrypt(result3), json_file)
+#with open('./aggregate/ckks_weights3.json', 'w') as json_file:
+#    json.dump(decrypt(result3), json_file)
 
 a1_encrypted = ts.ckks_tensor(context, a1)
 result = bias2_encrypted + bias2_encrypted
 print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(bias2, a1, decrypt(result)))
 
-#for count in range(len(keys_list)):
-#    with open('./aggregate/ckks_weights'+str(count)+'.json', 'w') as json_file:
-#        #json.dump(decrypt(result+str(count)), json_file,cls=EncodeTensor)
-#        json.dump(decrypt(result3), json_file)
+for count in range(len(keys_list)):
+    with open('./aggregate/ckks_weights'+str(count)+'.json', 'w') as json_file:
+        #json.dump(decrypt(result+str(count)), json_file,cls=EncodeTensor)
+        json.dump(decrypt(result_param[count]), json_file)
 
 # encrypted vectors
 enc_v1 = ts.ckks_vector(context, v1)

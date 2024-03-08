@@ -78,31 +78,53 @@ for count in range(len(keys_list)):
         elif count == 3:
             bias2 = ast.literal_eval(json_file.read())
 
+weight0_enc = ts.ckks_tensor(context, weight0)
+bias0_enc = ts.ckks_tensor(context, bias0)
+weight2_enc = ts.ckks_tensor(context, weight2)
+bias2_enc = ts.ckks_tensor(context, bias2)
+      
+result_param[0] = weight0_enc + weight0_enc
+result_param[1] = bias0_enc + bias0_enc
+result_param[2] = weight2_enc + weight2_enc
+result_param[3] = bias2_enc + bias2_enc
+
+### Code Below are used on tensors after add operation in its plaintext and cyphertext form
+
 # Convert it to a PyTorch tensor
-plaintext_data = torch.tensor(bias0, dtype=torch.float32)
+plaintext_data = torch.tensor(decrypt(result_param[0]), dtype=torch.float32)
 
 # Get the size in bytes of the PyTorch tensor
 size_in_bytes = plaintext_data.element_size() * plaintext_data.nelement()
 
-print("Size in bytes:", size_in_bytes)
+print("Plaintext size in bytes:", size_in_bytes)
 
-bias0_enc = ts.ckks_tensor(context, bias0)
 # Serialize the encrypted tensor to a bytearray
-serialized_data = bias0_enc.serialize()
+serialized_data = result_param[0].serialize()
 
 # Get the size in bytes of the serialized data
 size_in_bytes = len(serialized_data)
 
-print("Size in bytes:", size_in_bytes)
+print("Cyphertext Ssze in bytes:", size_in_bytes)
 ################################################################################
-# Convert it to a PyTorch tensor
-plaintext_data = torch.tensor(weight0, dtype=torch.float32)
+### Code Below are used on original tensors in its plaintext and cyphertext form
 
-# Get the size in bytes of the PyTorch tensor
-size_in_bytes = plaintext_data.element_size() * plaintext_data.nelement()
+# # Convert it to a PyTorch tensor
+# plaintext_data = torch.tensor(bias0, dtype=torch.float32)
 
-print("Size in bytes:", size_in_bytes)
+# # Get the size in bytes of the PyTorch tensor
+# size_in_bytes = plaintext_data.element_size() * plaintext_data.nelement()
 
+# print("Plaintext size in bytes:", size_in_bytes)
+
+# bias0_enc = ts.ckks_tensor(context, bias0)
+# # Serialize the encrypted tensor to a bytearray
+# serialized_data = bias0_enc.serialize()
+
+# # Get the size in bytes of the serialized data
+# size_in_bytes = len(serialized_data)
+
+# print("Cyphertext Ssze in bytes:", size_in_bytes)
+################################################################################
 ### Chuncking for Large Files
 
 # weight0_enc = ts.ckks_tensor(context, weight0)

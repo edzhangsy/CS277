@@ -1,18 +1,36 @@
 import tenseal as ts
 import ast
 import sys
-from torch.utils.data import Dataset
-from json import JSONEncoder
 import json
 
 def decrypt(enc):
     return enc.decrypt().tolist()
 
-class EncodeTensor(JSONEncoder,Dataset):
-    def default(self, obj):
-        if isinstance(obj, torch.Tensor):
-            return obj.cpu().detach().numpy().tolist()
-        return super(EncodeTensor, self).default(obj)
+def prepare_input_vector(context: bytes, ckks_vector: bytes) -> ts.CKKSVector:
+    try:
+        ctx = ts.context_from(context)
+        enc_x = ts.ckks_vector_from(ctx, ckks_vector)
+    except:
+        raise DeserializationError("cannot deserialize context or ckks_vector")
+    try:
+        _ = ctx.galois_keys()
+    except:
+        raise InvalidContext("the context doesn't hold galois keys")
+
+    return enc_x
+
+def prepare_input_tensor(context: bytes, ckks_tensor: bytes) -> ts.CKKSTensor:
+    #try:
+    ctx = ts.context_from(context)
+    enc_x = ts.ckks_tensor_from(ctx, ckks_tensor)
+    #except:
+    #    raise DeserializationError("cannot deserialize context or ckks_vector")
+    #try:
+    _ = ctx.galois_keys()
+    #except:
+    #    raise InvalidContext("the context doesn't hold galois keys")
+
+    return enc_x
 
 # Setup TenSEAL context
 context = ts.context(
@@ -60,9 +78,23 @@ for count in range(len(keys_list)):
         elif count == 3:
             bias2 = ast.literal_eval(json_file.read())
 
-### Encryption
-print(bias2)
+#weight_enc = ts.ckks_tensor(context, bias0)
+# Serialize the encrypted tensor to a bytearray
+#serialized_data = weight_enc.serialize()
 
+# Get the size in bytes of the serialized data
+#size_in_bytes = len(serialized_data)
+
+#print("Size in bytes:", size_in_bytes)
+### Serialize Data
+#weight0_encrypted = prepare_input_tensor(context, weight0)
+#bias0_encrypted = prepare_input_tensor(context, bias0)
+#weight2_encrypted = prepare_input_tensor(context, weight2)
+#bias2_encrypted = prepare_input_tensor(context, bias2)
+
+
+
+### Encryption
 weight0_encrypted = ts.ckks_tensor(context, weight0)
 bias0_encrypted = ts.ckks_tensor(context, bias0)
 weight2_encrypted = ts.ckks_tensor(context, weight2)
@@ -94,7 +126,6 @@ print("Plain equivalent: {} * {}\nDecrypted result: {}.".format(bias2, a1, decry
 
 for count in range(len(keys_list)):
     with open('./aggregate/ckks_weights'+str(count)+'.json', 'w') as json_file:
-        #json.dump(decrypt(result+str(count)), json_file,cls=EncodeTensor)
         json.dump(decrypt(result_param[count]), json_file)
 
 # encrypted vectors

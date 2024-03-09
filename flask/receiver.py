@@ -135,7 +135,9 @@ if __name__ == '__main__':
                              
     print('Stopping Flask development server...')
     # server.shutdown()
-
+    # Register a signal handler for Ctrl+C
+    raise KeyboardInterrupt()
+    signal.signal(signal.SIGINT, lambda signum, frame: simulate_ctrl_c())
     print('Server has stopped.')
     
     run_process_file()

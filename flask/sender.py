@@ -160,7 +160,9 @@ if __name__ == '__main__':
     
     print('Stopping Flask development server...')
     # server.shutdown()
-    
+    raise KeyboardInterrupt()
+    signal.signal(signal.SIGINT, lambda signum, frame: simulate_ctrl_c())
+    print('Server has stopped.')
     print('Server has stopped.')
     
     run_process_file()

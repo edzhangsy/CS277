@@ -2,23 +2,13 @@ from flask import Flask, request, send_from_directory
 import requests
 import subprocess
 import time
-import threading
+from werkzeug.serving import make_server
 
 app = Flask(__name__)
 
 def run_flask_app():
-    app.run(host='10.10.1.2', port=5000)
-
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-    
-@app.get('/shutdown')
-def shutdown():
-    shutdown_server()
-    return 'Server shutting down...'
+    # app.run(host='10.10.1.2', port=5000)
+    make_server('10.10.1.1', 5000, app)
 
 # Counter to keep track of received files
 received_file_count = 0
@@ -120,6 +110,7 @@ def send_file_to_sender(file_path, endpoint_on_sender):
 
 if __name__ == '__main__':
     # app.run(host='10.10.1.2', port=5000)
+    print('Starting Flask development server...')
     run_flask_app()
 
     while waiting_for_sender_confirmation:
@@ -129,6 +120,5 @@ if __name__ == '__main__':
         
     send_files_back()
     
-    endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
-    response = requests.post(endpoint_on_sender)
-    print(f"Response from sender node: {response}")
+    print('Stopping Flask development server...')
+    server.shutdown()

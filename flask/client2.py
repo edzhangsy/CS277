@@ -9,27 +9,6 @@ import multiprocessing
 from werkzeug import Request, Response, run_simple
 
 app = Flask(__name__)
-
-shutdown_event = threading.Event()
-server = None
-
-def get_token(q: multiprocessing.Queue) -> None:
-    @Request.application
-    def app(request: Request) -> Response:
-        q.put(request.args["token"])
-        return Response("", 204)
-
-    run_simple('10.10.1.1', 5000, app)
-    
-def run_flask_app():
-    # app.run(host='10.10.1.1', port=5000)
-    make_server('10.10.1.1', 5000, app)
-    
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
     
 @app.route('/shutdown', methods=['GET'])
 def shutdown():
@@ -44,7 +23,7 @@ waiting_for_receiver_confirmation = True
 
 # Define the IP address of the receiver node
 receiver_node_ip = "10.10.1.2:5000"
-self_node_ip = "10.10.1.1:5000"
+self_node_ip = "10.10.1.3:5000"
 
 def send_confirmation_to_receiver():
     global waiting_for_receiver_confirmation
@@ -90,7 +69,7 @@ def send_files():
     start_time = time.time()
 
     # Send four files
-    for i in range(4):
+    for i in range(4, 8):
         file_path = f"../mnist_model/state/torch_weights{i}.json"  # Update with the actual file paths
         response_from_receiver = send_file_to_receiver(file_path, endpoint_on_receiver)
 
@@ -148,33 +127,23 @@ def run_process_file():
         print(f"Error executing process_files.py: {e}")
 
 if __name__ == '__main__':
-    #app.run(host='10.10.1.1', port=5000)
-    
-    # Run the initial Python file
-    # if run_initial_process():
-    #     # Send the four files after the initial process
-    #     send_files()
+    #app.run(host='10.10.1.3', port=5000)
     
     run_initial_process()
     
-    for count in range(3):
+    for count in range(1):
         send_files()
-        # endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
-        # response = requests.get(endpoint_on_receiver)
-        
+
         # Run the Flask app to handle file downloads
-        # app.run(host='10.10.1.1', port=5000)
+        # app.run(host='10.10.1.3', port=5000)
         print('Starting Flask development server...')
         # run_flask_app()
-        # server = make_server('10.10.1.1', 5000, app)
-        # server.serve_forever()
-        run_simple('10.10.1.1', 5000, app, use_debugger=False)
+        run_simple('10.10.1.3', 5000, app, use_debugger=False)
             
         while waiting_for_receiver_confirmation:
             time.sleep(1)  # Wait for 1 second before checking again
         
         print('Stopping Flask development server...')
-        # server.shutdown()
 
         print('Server has stopped.')
         run_process_file()

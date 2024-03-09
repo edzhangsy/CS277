@@ -7,6 +7,7 @@ import torch
 from torch.utils.data import Dataset
 from json import JSONEncoder
 import json
+import ast
 
 from torchvision import transforms
 from PIL import Image

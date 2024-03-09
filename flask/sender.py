@@ -120,6 +120,9 @@ if __name__ == '__main__':
         # Send the four files after the initial process
         send_files()
         
+    # Run the Flask app to handle file downloads
+    app.run(host='10.10.1.1', port=5000)
+        
     waiting_for_receiver_confirmation = True
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
@@ -129,6 +132,3 @@ if __name__ == '__main__':
         run_process_file()
     else:
         print('ERROR: FILES INCOMPLETE')
-    
-        # Run the Flask app to handle file downloads
-        #app.run(host='10.10.1.1', port=5000)

@@ -15,21 +15,15 @@ def run_flask_app():
     make_server('10.10.1.2', 5000, app)
     
 def shutdown_server():
-    print('Stopping Flask development server...')
-    server.shutdown()
-    shutdown_event.set()
-
-@app.route('/shutdown', methods=['POST'])
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+    
+@app.route('/shutdown', methods=['GET'])
 def shutdown():
     shutdown_server()
     return 'Server shutting down...'
-
-def run_server(host='10.10.1.2', port=5000):
-    global server
-    server = make_server(host, port, app)
-    
-    print('Starting Flask development server...')
-    server.serve_forever()
 
 # Counter to keep track of received files
 received_file_count = 0
@@ -133,24 +127,15 @@ if __name__ == '__main__':
     # app.run(host='10.10.1.2', port=5000)
     print('Starting Flask development server...')
     # run_flask_app()
-    # server = make_server('10.10.1.2', 5000, app)
-    # server.serve_forever()
-    
-    # Start Flask server in a separate thread
-    server_thread = threading.Thread(target=run_server)
-    server_thread.start()
+    server = make_server('10.10.1.2', 5000, app)
+    server.serve_forever()
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
                              
     print('Stopping Flask development server...')
     # server.shutdown()
-    
-    while not shutdown_event.is_set():
-        pass
-        
-    # Wait for the shutdown event to be set
-    # server_thread.join()
+
     print('Server has stopped.')
     
     run_process_file()
@@ -158,5 +143,5 @@ if __name__ == '__main__':
     send_files_back()
     
     endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
-    response = requests.post(endpoint_on_sender)
+    response = requests.get(endpoint_on_sender)
     

@@ -2,13 +2,33 @@ from flask import Flask, request, send_from_directory
 import requests
 import subprocess
 import time
+import threading
 from werkzeug.serving import make_server
 
 app = Flask(__name__)
 
+shutdown_event = threading.Event()
+
 def run_flask_app():
     # app.run(host='10.10.1.1', port=5000)
     make_server('10.10.1.1', 5000, app)
+    
+def shutdown_server():
+    print('Stopping Flask development server...')
+    server.shutdown()
+    shutdown_event.set()
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
+
+def run_server(host='10.10.1.1', port=5000):
+    global server
+    server = make_server(host, port, app)
+    
+    print('Starting Flask development server...')
+    server.serve_forever()
         
 # Counter to keep track of received files
 received_file_count = 0
@@ -130,18 +150,29 @@ if __name__ == '__main__':
         # Send the four files after the initial process
         send_files()
     
+    endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
+    response = requests.post(endpoint_on_receiver)
+    
     # Run the Flask app to handle file downloads
     # app.run(host='10.10.1.1', port=5000)
     print('Starting Flask development server...')
     # run_flask_app()
-    server = make_server('10.10.1.1', 5000, app)
-    server.serve_forever()
+    # server = make_server('10.10.1.1', 5000, app)
+    # server.serve_forever()
+    
+    # Start Flask server in a separate thread
+    server_thread = threading.Thread(target=run_server)
+    server_thread.start()
         
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
     print('Stopping Flask development server...')
-    server.shutdown()
+    # server.shutdown()
+    
+    # Wait for the shutdown event to be set
+    server_thread.join()
+    print('Server has stopped.')
     
     run_process_file()
     

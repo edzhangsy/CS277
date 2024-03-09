@@ -146,8 +146,8 @@ if __name__ == '__main__':
         # Send the four files after the initial process
         send_files()
     
-    # endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
-    # response = requests.get(endpoint_on_receiver)
+    endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
+    response = requests.get(endpoint_on_receiver)
     
     # Run the Flask app to handle file downloads
     # app.run(host='10.10.1.1', port=5000)
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     # run_flask_app()
     # server = make_server('10.10.1.1', 5000, app)
     # server.serve_forever()
-    run_simple('10.10.1.2', 5000, app, use_debugger=False)
+    run_simple('10.10.1.1', 5000, app, use_debugger=False)
         
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again

@@ -55,12 +55,15 @@ def receive_file():
 def run_process_file():
     # Define the command to run the separate Python file
     command = ["python", "../mnist_model/plaintext_aggregate.py"]
-
-    try:
-        # Execute the command
-        subprocess.run(command, check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing process_files.py: {e}")
+    
+    if received_file_count == expected_file_count:
+        try:
+            # Execute the command
+            subprocess.run(command, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing process_files.py: {e}")
+    else: 
+        print("INCOMPLETE FILES")
 
 def send_files_back():
     global waiting_for_sender_confirmation
@@ -105,10 +108,6 @@ if __name__ == '__main__':
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
-    if received_file_count == expected_file_count:
-        # Run the separate Python file after receiving the expected number of files
-        run_process_file()
-    else:
-        print('ERROR: FILES INCOMPLETE')
+    run_process_file()
         
     send_files_back()

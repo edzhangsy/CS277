@@ -107,11 +107,14 @@ def run_process_file():
     # Define the command to run the separate Python file
     command = ["python", "../mnist_model/replace_weights_mnist.py"]
 
-    try:
-        # Execute the command
-        subprocess.run(command, check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing process_files.py: {e}")
+    if received_file_count == expected_file_count:
+        try:
+            # Execute the command
+            subprocess.run(command, check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error executing process_files.py: {e}")
+    else: 
+        print("INCOMPLETE FILES")
 
 if __name__ == '__main__':
     #app.run(host='10.10.1.1', port=5000)
@@ -127,8 +130,4 @@ if __name__ == '__main__':
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
-    if received_file_count == expected_file_count:
-        # Run the separate Python file after receiving the expected number of files
-        run_process_file()
-    else:
-        print('ERROR: FILES INCOMPLETE')
+    run_process_file()

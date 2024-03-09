@@ -35,7 +35,7 @@ for count in range(len(keys_list)):
             bias2 = ast.literal_eval(json_file.read())
 
 result_param[0] = weight0
-result_param[0] = [element + element for element in result_param[0]]
+result_param[0] = [[element + element for element in sublist] for sublist in result_param[0]]
 result_param[0] = [[element / 2 for element in sublist] for sublist in result_param[0]]
 
 result_param[1] = bias0
@@ -43,7 +43,7 @@ result_param[1] = [element + element for element in result_param[1]]
 result_param[1] = [element / 2 for element in result_param[1]]
 
 result_param[2] = weight2
-result_param[2] = [element + element for element in result_param[2]]
+result_param[2] = [[element + element for element in sublist] for sublist in result_param[2]]
 result_param[2] = [[element / 2 for element in sublist] for sublist in result_param[2]]
 
 result_param[3] = bias2

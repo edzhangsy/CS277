@@ -2,8 +2,18 @@ from flask import Flask, request, send_from_directory
 import requests
 import subprocess
 import time
+import threading
 
 app = Flask(__name__)
+
+def run_flask_app():
+    app.run(host='10.0.1.2', port=5000)
+    
+def stop_flask_app():
+    # Stop the Flask app gracefully
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is not None:
+        func()
 
 # Counter to keep track of received files
 received_file_count = 0
@@ -103,10 +113,20 @@ def send_file_to_sender(file_path, endpoint_on_sender):
     return response.text
 
 if __name__ == '__main__':
-    app.run(host='10.10.1.2', port=5000)
+    # app.run(host='10.10.1.2', port=5000)
+    
+    # Start the Flask app in a separate thread
+    flask_thread = threading.Thread(target=run_flask_app)
+    flask_thread.start()
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
+    
+    # Stop the Flask app gracefully
+    stop_flask_app()
+    
+    # Wait for the Flask thread to finish before exiting the main thread
+    flask_thread.join()
     
     run_process_file()
         

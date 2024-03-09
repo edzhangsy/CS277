@@ -145,8 +145,8 @@ if __name__ == '__main__':
         # Send the four files after the initial process
         send_files()
     
-    endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
-    response = requests.get(endpoint_on_receiver)
+    # endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
+    # response = requests.get(endpoint_on_receiver)
     
     # Run the Flask app to handle file downloads
     # app.run(host='10.10.1.1', port=5000)

@@ -144,6 +144,6 @@ if __name__ == '__main__':
         
     send_files_back()
     
-    endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
-    response = requests.get(endpoint_on_sender)
+    # endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
+    # response = requests.get(endpoint_on_sender)
     

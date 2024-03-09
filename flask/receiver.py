@@ -124,11 +124,11 @@ if __name__ == '__main__':
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
-    
-    endpoint_on_sender = f"http://{self_node_ip}/shutdown"
-    response = requests.post(endpoint_on_sender)
-    print(f"Response from self node: {response}")
                              
     run_process_file()
         
     send_files_back()
+    
+    endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
+    response = requests.post(endpoint_on_sender)
+    print(f"Response from sender node: {response}")

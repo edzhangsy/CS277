@@ -140,6 +140,10 @@ if __name__ == '__main__':
         # Send the four files after the initial process
         send_files()
         
+    endpoint_on_sender = f"http://{receiver_node_ip}/shutdown"
+    response = requests.post(endpoint_on_sender)
+    print(f"Response from receiver node: {response}")
+    
     # Run the Flask app to handle file downloads
     # app.run(host='10.10.1.1', port=5000)
     run_flask_app()
@@ -147,9 +151,6 @@ if __name__ == '__main__':
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
-    endpoint_on_sender = f"http://{self_node_ip}/shutdown"
-    response = requests.post(endpoint_on_sender)
-    print(f"Response from self node: {response}")
     
     run_process_file()
     

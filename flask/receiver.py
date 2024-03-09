@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 def run_flask_app():
     # app.run(host='10.10.1.2', port=5000)
-    make_server('10.10.1.1', 5000, app)
+    make_server('10.10.1.2', 5000, app)
 
 # Counter to keep track of received files
 received_file_count = 0
@@ -111,7 +111,9 @@ def send_file_to_sender(file_path, endpoint_on_sender):
 if __name__ == '__main__':
     # app.run(host='10.10.1.2', port=5000)
     print('Starting Flask development server...')
-    run_flask_app()
+    # run_flask_app()
+    serve = make_server('10.10.1.2', 5000, app)
+    server.serve_forever()
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again

@@ -3,8 +3,10 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor, Lambda
+import torch
+from torch.utils.data import Dataset
+from json import JSONEncoder
 import json
-import ast
 
 from torchvision import transforms
 from PIL import Image
@@ -136,3 +138,16 @@ for t in range(4):
     test_data(model)
 
 #torch.save(model.state_dict(), './state/model.pth')
+
+class EncodeTensor(JSONEncoder,Dataset):
+    def default(self, obj):
+        if isinstance(obj, torch.Tensor):
+            return obj.cpu().detach().numpy().tolist()
+        return super(EncodeTensor, self).default(obj)
+
+#with open('torch_weights.json', 'w') as json_file:
+#    json.dump(model.state_dict(), json_file,cls=EncodeTensor)
+
+for count, param_tensor in enumerate(model.state_dict()):
+    with open('../mnist_model/state/torch_weights'+str(count)+'.json', 'w') as json_file:
+        json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)

@@ -5,12 +5,22 @@ import time
 import threading
 from werkzeug.serving import make_server
 from werkzeug.serving import run_simple
+import multiprocessing
+from werkzeug import Request, Response, run_simple
 
 app = Flask(__name__)
 
 shutdown_event = threading.Event()
 server = None
 
+def get_token(q: multiprocessing.Queue) -> None:
+    @Request.application
+    def app(request: Request) -> Response:
+        q.put(request.args["token"])
+        return Response("", 204)
+
+    run_simple('10.10.1.2', 5000, app)
+    
 def run_flask_app():
     # app.run(host='10.10.1.2', port=5000)
     make_server('10.10.1.2', 5000, app)
@@ -130,14 +140,20 @@ if __name__ == '__main__':
     # run_flask_app()
     # server = make_server('10.10.1.2', 5000, app)
     # server.serve_forever()
-    run_simple('10.10.1.2', 5000, app, use_debugger=False)
+    # run_simple('10.10.1.2', 5000, app, use_debugger=False)
+    q = multiprocessing.Queue()
+    p = multiprocessing.Process(target=get_token, args=(q,))
+    p.start()
+    print("waiting")
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
                              
     print('Stopping Flask development server...')
     # server.shutdown()
-    # Register a signal handler for Ctrl+C
+    token = q.get(block=True)
+    p.terminate()
+    print(token)
     
     print('Server has stopped.')
     
@@ -145,6 +161,14 @@ if __name__ == '__main__':
         
     send_files_back()
     
-    endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
-    response = requests.get(endpoint_on_sender)
+    # endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
+    # response = requests.get(endpoint_on_sender)
+    
+    # q = multiprocessing.Queue()
+    # p = multiprocessing.Process(target=get_token, args=(q,))
+    # p.start()
+    # print("waiting")
+    # token = q.get(block=True)
+    # p.terminate()
+    # print(token)
     

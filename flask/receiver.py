@@ -4,6 +4,7 @@ import subprocess
 import time
 import threading
 from werkzeug.serving import make_server
+from werkzeug.serving import run_simple
 
 app = Flask(__name__)
 
@@ -127,8 +128,9 @@ if __name__ == '__main__':
     # app.run(host='10.10.1.2', port=5000)
     print('Starting Flask development server...')
     # run_flask_app()
-    server = make_server('10.10.1.2', 5000, app)
-    server.serve_forever()
+    # server = make_server('10.10.1.2', 5000, app)
+    # server.serve_forever()
+    run_simple('10.10.1.2', 5000, app, use_debugger=False)
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
@@ -136,14 +138,13 @@ if __name__ == '__main__':
     print('Stopping Flask development server...')
     # server.shutdown()
     # Register a signal handler for Ctrl+C
-    raise KeyboardInterrupt()
-    signal.signal(signal.SIGINT, lambda signum, frame: simulate_ctrl_c())
+    
     print('Server has stopped.')
     
     run_process_file()
         
     send_files_back()
     
-    # endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
-    # response = requests.get(endpoint_on_sender)
+    endpoint_on_sender = f"http://{sender_node_ip}/shutdown"
+    response = requests.get(endpoint_on_sender)
     

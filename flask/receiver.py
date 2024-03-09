@@ -140,14 +140,7 @@ if __name__ == '__main__':
     # run_flask_app()
     # server = make_server('10.10.1.2', 5000, app)
     # server.serve_forever()
-    # run_simple('10.10.1.2', 5000, app, use_debugger=False)
-    q = multiprocessing.Queue()
-    p = multiprocessing.Process(target=get_token, args=(q,))
-    p.start()
-    print("waiting")
-    token = q.get(block=True)
-    p.terminate()
-    print(token)
+    run_simple('10.10.1.2', 5000, app, use_debugger=False)
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again

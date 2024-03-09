@@ -38,7 +38,7 @@ def train():
     for i in range(4):
         file_path = f"../mnist_model/weights/torch_weights{i}.json"
         with open(file_path, "rb") as f:
-            file_path = f"../mnist_model/weights/{address_torch_weights{i}.json}"
+            file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json}"
             files = {"file" : (file_path, f.read())}
             response = requests.post(f"http://{switch_address}/add", files=files)
 

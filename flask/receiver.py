@@ -115,6 +115,8 @@ def send_files_back():
     # Record the completion time
     end_time = time.time()
     
+    waiting_for_sender_confirmation = True
+    
     # Continuously check for confirmation from the sender
     while waiting_for_sender_confirmation:
         send_confirmation_to_sender()

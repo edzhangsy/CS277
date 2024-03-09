@@ -99,6 +99,8 @@ def send_files():
     # Record the completion time
     end_time = time.time()
 
+    waiting_for_receiver_confirmation = True
+    
     # Continuously check for confirmation from the receiver
     while waiting_for_receiver_confirmation:
         send_confirmation_to_receiver()

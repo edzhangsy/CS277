@@ -115,12 +115,12 @@ def send_files_back():
     # Record the completion time
     end_time = time.time()
     
-    waiting_for_sender_confirmation = True
     # Continuously check for confirmation from the sender
     while waiting_for_sender_confirmation:
         send_confirmation_to_sender()
         time.sleep(1)  # Wait for 1 second before checking again
         
+    waiting_for_sender_confirmation = True
     # Calculate and print the elapsed time
     elapsed_time = end_time - start_time
     print(f"Total time elapsed: {elapsed_time:.2f} seconds")

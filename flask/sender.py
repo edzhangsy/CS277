@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 import requests
 import subprocess
 import time
@@ -52,6 +52,28 @@ def send_file_to_receiver(file_path):
     # Return the response from the receiver node
     return response.text
 
+def download_processed_files():
+    # Define the endpoint on the receiver node to handle file downloads
+    endpoint_on_receiver = f"http://{receiver_node_ip}/download_file"
+
+    # Download the four processed files
+    for i in range(0, 4):
+        filename = f"plain_weights{i}.json"
+        download_file_from_receiver(endpoint_on_receiver, filename)
+
+def download_file_from_receiver(endpoint_on_receiver, filename):
+    # Save the downloaded file locally
+    response = requests.get(f"{endpoint_on_receiver}/{filename}")
+    with open(f"../mnist_model/aggregate/{filename}", 'wb') as file:
+        file.write(response.content)
+
+    print(f"File downloaded from receiver: {filename}")
+
+# Flask route to handle file downloads
+@app.route('/download_file/<filename>')
+def download_file(filename):
+    return send_from_directory("../mnist_model/aggregate/", filename)
+
 if __name__ == '__main__':
     #app.run(host='10.10.1.1', port=5000)
 
@@ -59,3 +81,9 @@ if __name__ == '__main__':
     if run_initial_process():
         # Send the four files after the initial process
         send_files()
+
+        # Download the processed files from the receiver
+        download_processed_files()
+
+        # Run the Flask app to handle file downloads
+        app.run(host='10.10.1.1', port=5000)

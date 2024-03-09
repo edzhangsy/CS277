@@ -7,13 +7,18 @@ import threading
 app = Flask(__name__)
 
 def run_flask_app():
-    app.run(host='10.0.1.2', port=5000)
-    
-def stop_flask_app():
-    # Stop the Flask app gracefully
+    app.run(host='10.10.1.2', port=5000)
+
+def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
-    if func is not None:
-        func()
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+    
+@app.get('/shutdown')
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'
 
 # Counter to keep track of received files
 received_file_count = 0
@@ -23,6 +28,7 @@ waiting_for_sender_confirmation = True
 
 # Define the IP address of the receiver node
 sender_node_ip = "10.10.1.1:5000"
+self_node_ip = "10.10.1.2:5000"
 
 @app.route('/send_confirmation')
 def send_confirmation():
@@ -114,20 +120,15 @@ def send_file_to_sender(file_path, endpoint_on_sender):
 
 if __name__ == '__main__':
     # app.run(host='10.10.1.2', port=5000)
-    
-    # Start the Flask app in a separate thread
-    flask_thread = threading.Thread(target=run_flask_app)
-    flask_thread.start()
+    run_flask_app()
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
-    # Stop the Flask app gracefully
-    stop_flask_app()
-    
-    # Wait for the Flask thread to finish before exiting the main thread
-    flask_thread.join()
-    
+    endpoint_on_sender = f"http://{self_node_ip}/shutdown"
+    response = requests.post(endpoint_on_sender)
+    print(f"Response from self node: {response}")
+                             
     run_process_file()
         
     send_files_back()

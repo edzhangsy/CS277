@@ -134,14 +134,14 @@ if __name__ == '__main__':
     # app.run(host='10.10.1.1', port=5000)
     print('Starting Flask development server...')
     # run_flask_app()
-    serve = make_server('10.10.1.1', 5000, app)
+    server = make_server('10.10.1.1', 5000, app)
     server.serve_forever()
         
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     
+    print('Stopping Flask development server...')
+    server.shutdown()
     
     run_process_file()
     
-    print('Stopping Flask development server...')
-    server.shutdown()

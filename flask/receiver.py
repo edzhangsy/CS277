@@ -11,6 +11,9 @@ expected_file_count = 4  # Set the expected number of files
 
 waiting_for_sender_confirmation = True
 
+# Define the IP address of the receiver node
+sender_node_ip = "10.10.1.1:5000"
+
 @app.route('/send_confirmation')
 def send_confirmation():
     global waiting_for_sender_confirmation
@@ -19,10 +22,23 @@ def send_confirmation():
     waiting_for_sender_confirmation = False
     return "OK"
 
+def send_confirmation_to_sender():
+    global waiting_for_sender_confirmation
+
+    # Send a confirmation request to the sender by making an HTTP request
+    confirmation_endpoint = f"http://{sender_node_ip}/send_confirmation"
+    response = requests.get(confirmation_endpoint)
+    confirmation_text = response.text
+
+    if confirmation_text == "OK":
+        waiting_for_sender_confirmation = False
+        print("Confirmation received from sender.")
+    else:
+        print("Waiting for confirmation from sender...")
+
 @app.route('/receive_file', methods=['POST'])
 def receive_file():
     global received_file_count
-    global waiting_for_sender_confirmation
 
     # Get the uploaded file from the request
     uploaded_file = request.files['file']
@@ -33,13 +49,6 @@ def receive_file():
 
     # Increment the received file count
     received_file_count += 1
-
-    if received_file_count == expected_file_count:
-        # Run the separate Python file after receiving the expected number of files
-        run_process_file()
-
-        # Send back the four files to the sender after the Python file finishes
-        #send_files_back()
 
     return f"File received and saved: {uploaded_file.filename}"
 
@@ -54,25 +63,52 @@ def run_process_file():
         print(f"Error executing process_files.py: {e}")
 
 def send_files_back():
+    global waiting_for_sender_confirmation
     # Define the endpoint on the sender node to handle file downloads
-    endpoint_on_sender = "http://10.10.1.1:5000/download_file"
+    endpoint_on_sender = f"http://{sender_node_ip}/download_file"
 
+    # Record the start time
+    start_time = time.time()
+    
     # Send back the four files
-    for i in range(0, 4):
-        file_path = f"../mnist_model/aggregate/plain_weights{i}.json"  # Update with the
-actual file paths
-        send_file_to_sender(file_path, endpoint_on_sender)
+    for i in range(4):
+        file_path = f"../mnist_model/aggregate/plain_weights{i}.json"  # Update with the actual file paths
+        response_from_sender = send_file_to_sender(file_path, endpoint_on_sender)
+        
+        print(f"Response from sender node: {response_from_sender}")
+        
+    # Record the completion time
+    end_time = time.time()
+    
+    waiting_for_sender_confirmation = True
+    # Continuously check for confirmation from the sender
+    while waiting_for_sender_confirmation:
+        send_confirmation_to_sender()
+        time.sleep(1)  # Wait for 1 second before checking again
+        
+    # Calculate and print the elapsed time
+    elapsed_time = end_time - start_time
+    print(f"Total time elapsed: {elapsed_time:.2f} seconds")
 
 def send_file_to_sender(file_path, endpoint_on_sender):
     # Read the file and send it back in the response
     with open(file_path, 'rb') as file:
         files = {'file': (file_path, file.read())}
-        requests.post(endpoint_on_sender, files=files)
+        response = requests.post(endpoint_on_sender, files=files)
+        
+    # Return the response from the receiver node
+    return response.text
 
 if __name__ == '__main__':
     app.run(host='10.10.1.2', port=5000)
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
-
+    
+    if received_file_count == expected_file_count:
+        # Run the separate Python file after receiving the expected number of files
+        run_process_file()
+    else:
+        print('ERROR: FILES INCOMPLETE')
+        
     send_files_back()

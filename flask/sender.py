@@ -4,10 +4,37 @@ import subprocess
 import time
 
 app = Flask(__name__)
+
+# Counter to keep track of received files
+received_file_count = 0
+expected_file_count = 4  # Set the expected number of files
+
 waiting_for_receiver_confirmation = True
 
 # Define the IP address of the receiver node
 receiver_node_ip = "10.10.1.2:5000"
+
+def send_confirmation_to_receiver():
+    global waiting_for_receiver_confirmation
+
+    # Send a confirmation request to the receiver by making an HTTP request
+    confirmation_endpoint = f"http://{receiver_node_ip}/send_confirmation"
+    response = requests.get(confirmation_endpoint)
+    confirmation_text = response.text
+
+    if confirmation_text == "OK":
+        waiting_for_receiver_confirmation = False
+        print("Confirmation received from receiver.")
+    else:
+        print("Waiting for confirmation from receiver...")
+
+@app.route('/send_confirmation')
+def send_confirmation():
+    global waiting_for_receiver_confirmation
+
+    # This endpoint will be called by the receiver to confirm completion
+    waiting_for_receiver_confirmation = False
+    return "OK"
 
 def run_initial_process():
     # Define the command to run the initial Python file
@@ -44,7 +71,7 @@ def send_files():
         send_confirmation_to_receiver()
         time.sleep(1)  # Wait for 1 second before checking again
         
-        # Calculate and print the elapsed time
+    # Calculate and print the elapsed time
     elapsed_time = end_time - start_time
     print(f"Total time elapsed: {elapsed_time:.2f} seconds")
 
@@ -57,41 +84,33 @@ def send_file_to_receiver(file_path, endpoint_on_receiver):
     # Return the response from the receiver node
     return response.text
 
-def send_confirmation_to_receiver():
-    global waiting_for_receiver_confirmation
+# Flask route to handle file receive
+@app.route('/receive_file/', methods=['POST'])
+def receive_file(filename):
+    global received_file_count
+    global waiting_for_sender_confirmation
 
-    # Send a confirmation request to the receiver by making an HTTP request
-    confirmation_endpoint = f"http://{receiver_node_ip}/send_confirmation"
-    response = requests.get(confirmation_endpoint)
-    confirmation_text = response.text
+    # Get the uploaded file from the request
+    uploaded_file = request.files['file']
 
-    if confirmation_text == "OK":
-        waiting_for_receiver_confirmation = False
-        print("Confirmation received from receiver.")
-    else:
-        print("Waiting for confirmation from receiver...")
+    # Save the received file
+    file_path = f"{uploaded_file.filename}"
+    uploaded_file.save(file_path)
 
-def download_processed_files():
-    # Define the endpoint on the receiver node to handle file downloads
-    endpoint_on_receiver = f"http://{receiver_node_ip}/download_file"
+    # Increment the received file count
+    received_file_count += 1
 
-    # Download the four processed files
-    for i in range(0, 4):
-        filename = f"plain_weights{i}.json"
-        download_file_from_receiver(endpoint_on_receiver, filename)
+    return f"File received and saved: {uploaded_file.filename}"
 
-def download_file_from_receiver(endpoint_on_receiver, filename):
-    # Save the downloaded file locally
-    response = requests.get(f"{endpoint_on_receiver}/{filename}")
-    with open(f"../mnist_model/aggregate/{filename}", 'wb') as file:
-        file.write(response.content)
-        
-        print(f"File downloaded from receiver: {filename}")
+def run_process_file():
+    # Define the command to run the separate Python file
+    command = ["python", "../mnist_model/replace_weights_mnist.py"]
 
-# Flask route to handle file downloads
-@app.route('/download_file/')
-def download_file(filename):
-    return send_from_directory("../mnist_model/aggregate/", filename)
+    try:
+        # Execute the command
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing process_files.py: {e}")
 
 if __name__ == '__main__':
     #app.run(host='10.10.1.1', port=5000)
@@ -100,9 +119,16 @@ if __name__ == '__main__':
     if run_initial_process():
         # Send the four files after the initial process
         send_files()
-
-        # Download the processed files from the receiver
-        download_processed_files()
-
+        
+    waiting_for_receiver_confirmation = True
+    while waiting_for_receiver_confirmation:
+        time.sleep(1)  # Wait for 1 second before checking again
+    
+    if received_file_count == expected_file_count:
+        # Run the separate Python file after receiving the expected number of files
+        run_process_file()
+    else:
+        print('ERROR: FILES INCOMPLETE')
+    
         # Run the Flask app to handle file downloads
         #app.run(host='10.10.1.1', port=5000)

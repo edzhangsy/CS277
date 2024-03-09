@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, request, send_from_directory
 import requests
 import subprocess
 import time
@@ -50,6 +50,7 @@ def run_initial_process():
     return True
 
 def send_files():
+    global waiting_for_receiver_confirmation
     # Define the endpoint on the receiver node to handle file uploads
     endpoint_on_receiver = f"http://{receiver_node_ip}/receive_file"
 
@@ -70,7 +71,8 @@ def send_files():
     while waiting_for_receiver_confirmation:
         send_confirmation_to_receiver()
         time.sleep(1)  # Wait for 1 second before checking again
-        
+    
+    waiting_for_receiver_confirmation = True
     # Calculate and print the elapsed time
     elapsed_time = end_time - start_time
     print(f"Total time elapsed: {elapsed_time:.2f} seconds")
@@ -86,9 +88,8 @@ def send_file_to_receiver(file_path, endpoint_on_receiver):
 
 # Flask route to handle file receive
 @app.route('/receive_file/', methods=['POST'])
-def receive_file(filename):
+def receive_file():
     global received_file_count
-    global waiting_for_sender_confirmation
 
     # Get the uploaded file from the request
     uploaded_file = request.files['file']
@@ -123,7 +124,6 @@ if __name__ == '__main__':
     # Run the Flask app to handle file downloads
     app.run(host='10.10.1.1', port=5000)
         
-    waiting_for_receiver_confirmation = True
     while waiting_for_receiver_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
     

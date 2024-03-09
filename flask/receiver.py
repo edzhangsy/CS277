@@ -64,8 +64,8 @@ def run_process_file():
 
 def send_files_back():
     global waiting_for_sender_confirmation
-    # Define the endpoint on the sender node to handle file downloads
-    endpoint_on_sender = f"http://{sender_node_ip}/download_file"
+    # Define the endpoint on the sender node to handle file receive
+    endpoint_on_sender = f"http://{sender_node_ip}/receive_file"
 
     # Record the start time
     start_time = time.time()

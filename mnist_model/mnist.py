@@ -119,7 +119,7 @@ def test_data(model):
     corrects /= size
     print(f"Test loss: \n Accuracy: {(100*corrects):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-for t in range(60):
+for t in range(5):
     train_data(model)
     test_data(model)
 

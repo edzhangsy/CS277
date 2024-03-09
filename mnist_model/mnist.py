@@ -8,6 +8,10 @@ from torch.utils.data import Dataset
 from json import JSONEncoder
 import json
 
+from torchvision import transforms
+from PIL import Image
+import numpy as np
+
 ### Grabbing MNIST data with torchvision datasets
 training_data = datasets.MNIST(
     root = 'data',
@@ -31,7 +35,31 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 training_data[0][0].shape
 training_data[0][0].squeeze().shape
+training_data = list(map(list, training_data))
+test_data = list(map(list, test_data))
 
+for count in range(len(training_data)):
+
+    # Convert the PyTorch tensor to a PIL Image
+    pil_image = transforms.ToPILImage()(training_data[count][0])
+
+    # Resize the image to 16x16
+    resized_image = pil_image.resize((12, 12))
+
+    # Convert the resized image back to a PyTorch tensor
+    training_data[count][0] = transforms.ToTensor()(resized_image)
+
+for count in range(len(test_data)):
+    
+    # Convert the PyTorch tensor to a PIL Image
+    pil_image = transforms.ToPILImage()(test_data[count][0])
+
+    # Resize the image to 16x16
+    resized_image = pil_image.resize((12, 12))
+
+    # Convert the resized image back to a PyTorch tensor
+    test_data[count][0] = transforms.ToTensor()(resized_image)
+    
 train_dataloader = DataLoader (training_data, batch_size = 64)
 test_dataloader = DataLoader(test_data, batch_size = 64)
 
@@ -40,9 +68,9 @@ class NeuralNetwork(nn.Module):
         super().__init__()
         self.flatten = nn.Flatten()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 64),
+            nn.Linear(12*12, 32),
             nn.ReLU(),
-            nn.Linear(64, 10)
+            nn.Linear(32, 10)
         )
 
     def forward(self, x):
@@ -91,7 +119,7 @@ def test_data(model):
     corrects /= size
     print(f"Test loss: \n Accuracy: {(100*corrects):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-for t in range(4):
+for t in range(5):
     train_data(model)
     test_data(model)
 
@@ -116,5 +144,5 @@ class EncodeTensor(JSONEncoder,Dataset):
 #    json.dump(model.state_dict(), json_file,cls=EncodeTensor)
 
 for count, param_tensor in enumerate(model.state_dict()):
-    with open('./state/torch_weights'+str(count)+'.json', 'w') as json_file:
+    with open('./weights/torch_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)

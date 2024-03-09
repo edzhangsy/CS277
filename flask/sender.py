@@ -8,6 +8,7 @@ from werkzeug.serving import make_server
 app = Flask(__name__)
 
 shutdown_event = threading.Event()
+server = None
 
 def run_flask_app():
     # app.run(host='10.10.1.1', port=5000)
@@ -170,8 +171,11 @@ if __name__ == '__main__':
     print('Stopping Flask development server...')
     # server.shutdown()
     
+    while not shutdown_event.is_set():
+        pass
+    
     # Wait for the shutdown event to be set
-    server_thread.join()
+    # server_thread.join()
     print('Server has stopped.')
     
     run_process_file()

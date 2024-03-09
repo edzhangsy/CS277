@@ -145,15 +145,15 @@ if __name__ == '__main__':
     p = multiprocessing.Process(target=get_token, args=(q,))
     p.start()
     print("waiting")
+    token = q.get(block=True)
+    p.terminate()
+    print(token)
 
     while waiting_for_sender_confirmation:
         time.sleep(1)  # Wait for 1 second before checking again
                              
     print('Stopping Flask development server...')
     # server.shutdown()
-    token = q.get(block=True)
-    p.terminate()
-    print(token)
     
     print('Server has stopped.')
     

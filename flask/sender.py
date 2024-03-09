@@ -160,7 +160,7 @@ if __name__ == '__main__':
     
     run_initial_process()
     
-    for count in range(2):
+    for count in range(3):
         send_files()
         # endpoint_on_receiver = f"http://{receiver_node_ip}/shutdown"
         # response = requests.get(endpoint_on_receiver)

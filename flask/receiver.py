@@ -137,7 +137,7 @@ def send_file_to_sender(file_path, endpoint_on_sender):
     return response.text
 
 if __name__ == '__main__':
-    for count in range(2):
+    for count in range(3):
         # app.run(host='10.10.1.2', port=5000)
         print('Starting Flask development server...')
         # run_flask_app()

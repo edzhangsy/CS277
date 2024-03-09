@@ -154,6 +154,7 @@ if __name__ == '__main__':
         print('Server has stopped.')
         
         run_process_file()
+        expected_file_count = expected_file_count * count
             
         send_files_back()
     

@@ -22,7 +22,7 @@ result_param = {
 keys_list = ['linear_relu_stack.0.weight', 'linear_relu_stack.0.bias', 'linear_relu_stack.2.weight', 'linear_relu_stack.2.bias']
 
 for count in range(len(keys_list)):
-    with open('~/CS277/mnist_model/state/torch_weights'+str(count)+'.json', 'r') as json_file:
+    with open('../mnist_model/state/torch_weights'+str(count)+'.json', 'r') as json_file:
         #print(json_file.read())
         #ast.literal_eval(json_file.read())
         if count == 0:
@@ -47,7 +47,7 @@ result_param[3] = bias2 + bias2
 result_param[3] = [element / 2 for element in result_param[3]]
 
 for count in range(len(keys_list)):
-    with open('~/CS277/mnist_model/aggregate/plain_weights'+str(count)+'.json', 'w') as json_file:
+    with open('../mnist_model/aggregate/plain_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(result_param[count], json_file)
 
 

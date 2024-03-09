@@ -88,14 +88,11 @@ def run_process_file():
     # Define the command to run the separate Python file
     command = ["python", "../mnist_model/plaintext_aggregate.py"]
     
-    if received_file_count == expected_file_count:
-        try:
-            # Execute the command
-            subprocess.run(command, check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Error executing process_files.py: {e}")
-    else: 
-        print("INCOMPLETE FILES")
+    try:
+        # Execute the command
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing process_files.py: {e}")
 
 def send_files_back():
     global waiting_for_sender_confirmation
@@ -154,7 +151,6 @@ if __name__ == '__main__':
         print('Server has stopped.')
         
         run_process_file()
-        expected_file_count = expected_file_count * count
             
         send_files_back()
     

@@ -1,49 +1,56 @@
 {
 	"aggregaotr": {
-        "iteration": 10
+        "iteration": 10,
+	"ip": "10.10.1.1"
 	},
 	"others": {
-		"10.10.1.1" : {
+		"10.10.1.2" : {
 			"type": "client",
 			"client_number": 4,
 			"index": 0,
 			"key": "put public key here",
-			"send": "10.10.1.5"
-		},
-		"10.10.1.2" : {
-			"type": "client",
-			"client_number": 4,
-			"index": 1,
-			"key": "put public key here",
-			"send": "10.10.1.5"
+			"send": "10.10.1.6",
+			"ip": "10.10.1.2"
 		},
 		"10.10.1.3" : {
 			"type": "client",
 			"client_number": 4,
-			"index": 2,
+			"index": 1,
 			"key": "put public key here",
-			"send": "10.10.1.6"
+			"send": "10.10.1.6",
+			"ip": "10.10.1.3"
 		},
 		"10.10.1.4" : {
 			"type": "client",
 			"client_number": 4,
-			"index": 3,
+			"index": 2,
 			"key": "put public key here",
-			"send": "10.10.1.6"
+			"send": "10.10.1.7",
+			"ip": "10.10.1.4"
 		},
 		"10.10.1.5" : {
-			"type": "switch",
-			"key": "put resolvekey here",
-			"dumb": false,
-			"receive": ["10.10.1.1", "10.10.1.2"],
-			"send": "10.10.10.15"
+			"type": "client",
+			"client_number": 4,
+			"index": 3,
+			"key": "put public key here",
+			"send": "10.10.1.7"
+			"ip": "10.10.1.5"
 		},
 		"10.10.1.6" : {
 			"type": "switch",
 			"key": "put resolvekey here",
 			"dumb": false,
-			"receive": ["10.10.1.3", "10.10.1.4"],
-			"send": "10.10.10.15"
+			"receive": ["10.10.1.2", "10.10.1.3"],
+			"send": "10.10.1.1"
+			"ip": "10.10.1.6"
+		},
+		"10.10.1.7" : {
+			"type": "switch",
+			"key": "put resolvekey here",
+			"dumb": false,
+			"receive": ["10.10.1.4", "10.10.1.5"],
+			"send": "10.10.1.1"
+			"ip": "10.10.1.7"
 		}
 
 	}

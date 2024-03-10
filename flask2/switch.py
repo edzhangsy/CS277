@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app
 import ast
-import tenseal
+#import tenseal
 import requests
 
 switch_bp = Blueprint('switch', __name__)

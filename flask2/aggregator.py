@@ -10,6 +10,15 @@ log = {}
 iterations = 0
 received_file_count = 0
 
+@aggregator_bp.route("/train")
+def train():
+    global config
+
+    for key, value in config["others"].items():
+        if value["type"] == "client":
+            requests.get("http://{key}/train")
+    return
+
 @aggregator_bp.route("/aggregate", methods=["POST"])
 def aggregate():
     global received_file_count

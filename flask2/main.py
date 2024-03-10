@@ -60,6 +60,3 @@ if __name__ == '__main__':
     app.register_blueprint(switch.switch_bp)
     app.register_blueprint(client.client_bp)
     app.run('0.0.0.0', debug=True, port=5000)
-    for key, value in config["others"].items():
-        if value["type"] == "client":
-            requests.get(f"http://{key}/train")

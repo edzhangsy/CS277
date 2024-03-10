@@ -57,16 +57,16 @@ for count in range(len(keys_list)):
 result_param[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight0_c1, weight0_c2)]
 result_param[0] = [[element / 2 for element in sublist] for sublist in result_param[0]]
 
-result_param[1] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(bias0_c1, bias0_c2)]
+result_param[1] = [element1 + element2 for element1, element2 in zip(bias0_c1, bias0_c2)]
 result_param[1] = [element / 2 for element in result_param[1]]
 
 result_param[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight2_c1, weight2_c2)]
 result_param[2] = [[element / 2 for element in sublist] for sublist in result_param[2]]
 
-result_param[3] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(bias2_c1, bias2_c2)]
+result_param[3] = [element1 + element2 for element1, element2 in zip(bias2_c1, bias2_c2)]
 result_param[3] = [element / 2 for element in result_param[3]]
 
-for count in range(len(keys_list)*2):
+for count in range(len(keys_list)):
     with open('../mnist_model/aggregate/plain_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(result_param[count], json_file)
 

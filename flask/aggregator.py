@@ -87,7 +87,7 @@ def run_process_file():
     global received_file_count
     
     # Define the command to run the separate Python file
-    command = ["python", "../mnist_model/plaintext_aggregate.py"]
+    command = ["python", "../mnist_model/plaintext_aggregate_fl.py"]
     received_file_count = 0
     
     try:

@@ -40,7 +40,7 @@ def aggregator_init():
     with open('./config.json', 'r') as file:
         aggregator.config = json.load(file)
 
-    aggregator.iterations = aggregator.config["iteration"]
+    aggregator.iterations = aggregator.config["aggregator"]["iteration"]
  
  # call the others
     print(aggregator.config)

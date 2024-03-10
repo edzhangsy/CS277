@@ -14,7 +14,7 @@ def init(config):
     #global context
     global switch_address
 
-    context = config["context"]
+    #context = config["context"]
     switch_address = config["send"]
 
     return

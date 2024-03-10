@@ -49,7 +49,7 @@ def send_confirmation():
 
 def run_initial_process():
     # Define the command to run the initial Python file
-    initial_command = ["python", "../mnist_model/mnist.py"]
+    initial_command = ["python", "../mnist_model/mnist_client1.py"]
 
     try:
         # Execute the command
@@ -118,7 +118,7 @@ def receive_file():
 
 def run_process_file():
     # Define the command to run the separate Python file
-    command = ["python", "../mnist_model/replace_weights_mnist.py"]
+    command = ["python", "../mnist_model/replace_weights_mnist_client1.py"]
 
     try:
         # Execute the command

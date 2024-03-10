@@ -23,30 +23,49 @@ waiting_for_sender2_confirmation = True
 
 # Define the IP address of the receiver node
 sender1_node_ip = "10.10.1.1:5000"
+sender1_node = "10.10.1.1"
 sender2_node_ip = "10.10.1.3:5000"
+sender2_node = "10.10.1.3"
 self_node_ip = "10.10.1.2:5000"
 
 @app.route('/send_confirmation')
 def send_confirmation():
-    global waiting_for_sender_confirmation
+    # Accessing information about the request
+    client_ip = request.remote_addr
+    print(f"Confirmation received from IP: {client_ip}")
+    
+    global waiting_for_sender1_confirmation
+    global waiting_for_sender2_confirmation
 
     # This endpoint will be called by the sender to confirm completion
-    waiting_for_sender_confirmation = False
+    if client_ip == sender1_node:
+        waiting_for_sender1_confirmation = False
+    if client_ip == sender2_node:
+        waiting_for_sender2_confirmation = False
     return "OK"
 
 def send_confirmation_to_sender(sender_node_ip):
-    global waiting_for_sender_confirmation
+    global waiting_for_sender1_confirmation
+    global waiting_for_sender2_confirmation
 
     # Send a confirmation request to the sender by making an HTTP request
     confirmation_endpoint = f"http://{sender_node_ip}/send_confirmation"
     response = requests.get(confirmation_endpoint)
     confirmation_text = response.text
 
-    if confirmation_text == "OK":
-        waiting_for_sender_confirmation = False
-        print("Confirmation received from sender.")
-    else:
-        print("Waiting for confirmation from sender...")
+    if sender_node_ip == sender1_node_ip:
+        if confirmation_text == "OK":
+            waiting_for_sender1_confirmation = False
+            print("Confirmation received from sender.")
+        else:
+            print("Waiting for confirmation from sender...")
+            
+    if sender_node_ip == sender2_node_ip:
+        if confirmation_text == "OK":
+            waiting_for_sender2_confirmation = False
+            print("Confirmation received from sender.")
+        else:
+            print("Waiting for confirmation from sender...")
 
 @app.route('/receive_file', methods=['POST'])
 def receive_file():
@@ -80,7 +99,7 @@ def run_process_file():
 def send_files_back():
     global waiting_for_sender1_confirmation
     # Define the endpoint on the sender node to handle file receive
-    endpoint_on_sender = f"http://{sende1_node_ip}/receive_file"
+    endpoint_on_sender = f"http://{sender1_node_ip}/receive_file"
 
     # Record the start time
     start_time = time.time()

@@ -36,6 +36,7 @@ def aggregate():
 
     # Get the weights
     if received_file_count == 8:
+        reveived_file_count = 0
         sender_address = sender_addr()
         address1 = sender_address[0]
         address2 = sender_address[1]

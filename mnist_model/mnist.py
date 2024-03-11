@@ -144,5 +144,6 @@ class EncodeTensor(JSONEncoder,Dataset):
 #    json.dump(model.state_dict(), json_file,cls=EncodeTensor)
 
 for count, param_tensor in enumerate(model.state_dict()):
+    print("writing file")
     with open('./weights/torch_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)

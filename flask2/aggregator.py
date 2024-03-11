@@ -130,7 +130,7 @@ def sender_addr():
 
     address = []
 
-    for key, value in config["others"].items:
+    for key, value in config["others"].items():
         if value["send"] == "10.10.1.1":
             address.append(key)
 

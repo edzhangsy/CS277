@@ -86,7 +86,7 @@ def aggregate():
         # Save results
         for i in range(len(aggregation_results)):
             with open("../mnist_model/weights/torch_weights"+str(i)+".json", "w") as json_file:
-                json.dump(aggregation_results[i], jason_file)
+                json.dump(aggregation_results[i], json_file)
 
         clients = clients_address()
 

@@ -95,7 +95,7 @@ def send_files():
 
     # Send four files
     for i in range(4, 8):
-        file_path = f"../mnist_model/state/torch_weights{i}.pkl"  # Update with the actual file paths
+        file_path = f"../mnist_model/state/torch_weights{i}.json"  # Update with the actual file paths
         response_from_receiver = send_file_to_receiver(file_path, endpoint_on_receiver)
 
         print(f"Response from receiver node: {response_from_receiver}")

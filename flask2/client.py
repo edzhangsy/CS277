@@ -25,6 +25,7 @@ def train():
     global switch_address
     global config
 
+    print("Client Train")
     command = ["python", "../mnist_model/mnist.py"]
 
     try:
@@ -50,12 +51,13 @@ def continue_traning():
     global received_file_count
     global config
 
-    print("Continue Training")
+    print("Client Continue Training")
     file = request.files["file"]
     file.save(f"{file.filename}")
 
     received_file_count += 1
 
+    print(f"Client files received: {received_file_count}")
     if received_file_count == 4:
         received_file_count = 0
         # Deserialize and remove encryption
@@ -74,6 +76,7 @@ def continue_traning():
                 # Where does replace_weights_mnist save files?
                 file_path = f"../mnist_model/weights/torch_weights{i}.json"
                 with open(file_path, "rb") as f:
+                    print(f"Client send to: {switch_address}")
                     file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json"
                     files = {"file" : (file_path, f.read())}
                     requests.post(f"http://{switch_address}:5000/", files=files)

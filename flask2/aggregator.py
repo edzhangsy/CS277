@@ -17,6 +17,7 @@ received_file_count = 0
 def train():
     global config
 
+    print("Aggregator Train")
     for key, value in config["others"].items():
         t = value["type"]
         if value["type"] == "client":
@@ -31,6 +32,7 @@ def aggregate():
     global iterations
     global config
 
+    print("Aggregator Continue Training")
     # Get files and save
     file = request.files["file"]
     file.save(f"{file.filename}")
@@ -72,6 +74,7 @@ def aggregate():
                 3: None,
                 }
 
+        print("Aggregate weights")
         num = num_clients()
 
         # Get the average
@@ -113,6 +116,7 @@ def aggregate():
                 for j in range(4):
                     file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
                     with open(file_path, "rb") as f:
+                        print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
                         requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 

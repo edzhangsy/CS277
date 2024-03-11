@@ -29,6 +29,7 @@ def add():
     global config
     global received_file_count
     
+    print("Switch Add")
     # Get files
     file = request.files["file"]
     file.save(f"{file.filename}")
@@ -37,6 +38,7 @@ def add():
 
     receive_address = config["receive"]
 
+    print(f"Switch file count: {received_file_count}")
     if received_file_count == 8:
         received_file_count = 0
         # Open files and get weights
@@ -92,6 +94,7 @@ def add():
         for i in range(4):
             file_path = f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".json"
             with open(file_path, "rb") as f:
+                print(f"Switch send to: {address}")
                 files = {"file" : (file_path, f.read())}
                 requests.post(f"http://{address}:5000/", files=files)
 

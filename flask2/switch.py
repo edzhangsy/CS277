@@ -53,13 +53,13 @@ def add():
 
         for i in range(4):
             with open(f"../mnist_model/weights/{receive2}_torch_weights"+str(i)+".json", "r") as json_file:
-                if i == 1:
+                if i == 0:
                     weight2 = ast.literal_eval(json_file.read())
-                elif i == 2:
+                elif i == 1:
                     bias2 = ast.literal_eval(json_file.read())
-                elif i == 3:
+                elif i == 2:
                     weight3 = ast.literal_eval(json_file.read())
-                elif i == 4:
+                elif i == 3:
                     bias3 = ast.literal_eval(json_file.read())
 
         add_results = {

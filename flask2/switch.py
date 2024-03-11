@@ -60,7 +60,7 @@ def add():
                 elif i == 3:
                     weight3 = ast.literal_eval(json_file.read())
                 elif i == 4:
-                    bieas3 = ast.literal_eval(json_file.read())
+                    bias3 = ast.literal_eval(json_file.read())
 
         add_results = {
             0: None,

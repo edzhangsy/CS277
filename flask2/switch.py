@@ -34,7 +34,7 @@ def add():
 
     received_file_count += 1
 
-    recieve_address = config["receive"]
+    receive_address = config["receive"]
 
     if received_file_count == 8:
         # Open files and get weights
@@ -88,4 +88,4 @@ def add():
                 files = {"file" : (file_path, f.read())}
                 request.post(f"http://address:5000/", files=files)
 
-    return
+    return ""

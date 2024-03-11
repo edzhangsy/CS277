@@ -28,7 +28,7 @@ def aggregate():
     global config
 
     # Get files and save
-    file = request.files["files"]
+    file = request.files["file"]
     file.save(f"{file.filename}")
 
     received_file_count += 1

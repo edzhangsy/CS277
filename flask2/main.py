@@ -43,7 +43,7 @@ def aggregator_init():
     aggregator.iterations = aggregator.config["aggregator"]["iteration"]
  
  # call the others
-    print(aggregator.config)
+    #print(aggregator.config)
     for key, value in aggregator.config['others'].items():
         print(key, value)
         try:

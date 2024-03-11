@@ -25,7 +25,6 @@ def train():
     global switch_address
     global config
 
-    print("training")
     command = ["python", "../mnist_model/mnist.py"]
 
     try:

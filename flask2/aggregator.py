@@ -16,13 +16,11 @@ received_file_count = 0
 def train():
     global config
 
-    with Pool(num_clients()) as pool:
-        for key, value in config["others"].items():
-            t = value["type"]
-            if value["type"] == "client":
-                print(f"training: {key}, type {t}")
-                res = pool.apply_async(send_get, (f"http://{key}:5000/train",))
-                res.get()
+    for key, value in config["others"].items():
+        t = value["type"]
+        if value["type"] == "client":
+            print(f"training: {key}, type {t}")
+                requests.get(f"http://{key}:5000/train")
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])
@@ -139,8 +137,3 @@ def sender_addr():
             address.append(key)
 
     return address
-
-def send_get(address):
-    print("send 2")
-    requests.get(address)
-    return

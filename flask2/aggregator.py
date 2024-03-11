@@ -60,10 +60,10 @@ def aggregate():
                     bias3 = ast.literal_eval(json_file.read())
 
         aggregation_results = {
-                0: result0,
-                1: result1,
-                2: result2,
-                3: result3,
+                0: None,
+                1: None,
+                2: None,
+                3: None,
                 }
 
         num = num_clients()

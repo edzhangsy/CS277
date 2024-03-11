@@ -91,13 +91,13 @@ def aggregate():
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
 
         aggregation_results[1] = [element1 + element2 for element1, element2 in zip(bias0, bias2)]
-        aggregation_results[1] = [[element / num for element in aggregation_results[1]]
+        aggregation_results[1] = [element / num for element in aggregation_results[1]]
 
         aggregation_results[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight1, weight3)]
         aggregation_results[2] = [[element / num for element in sublist] for sublist in aggregation_results[2]]
 
         aggregation_results[3] = [element1 + element2 for element1, element2 in zip(bias1, bias3)]
-        aggregation_results[3] = [[element / num for element in aggregation_results[3]]
+        aggregation_results[3] = [element / num for element in aggregation_results[3]]
 
         # Save results
         for i in range(len(aggregation_results)):

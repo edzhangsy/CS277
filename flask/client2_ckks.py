@@ -70,7 +70,7 @@ def send_files():
 
     # Send four files
     for i in range(4, 8):
-        file_path = f"../mnist_model/state/torch_weights{i}.json"  # Update with the actual file paths
+        file_path = f"../mnist_model/ckks/ckks_weights{i}.pkl"  # Update with the actual file paths
         response_from_receiver = send_file_to_receiver(file_path, endpoint_on_receiver)
 
         print(f"Response from receiver node: {response_from_receiver}")
@@ -118,7 +118,7 @@ def receive_file():
 
 def run_process_file():
     # Define the command to run the separate Python file
-    command = ["python", "../mnist_model/replace_weights_mnist_client2.py"]
+    command = ["python", "../mnist_model/replace_weights_mnist_ckks_client2.py"]
 
     try:
         # Execute the command
@@ -126,12 +126,31 @@ def run_process_file():
     except subprocess.CalledProcessError as e:
         print(f"Error executing process_files.py: {e}")
 
+def encrypt_file():
+    # Define the command to run the separate Python file
+    command = ["python", "../mnist_model/ckks_weights_client2.py"]
+
+    try:
+        # Execute the command
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing process_files.py: {e}")
+        
 if __name__ == '__main__':
     #app.run(host='10.10.1.3', port=5000)
+    print('Starting Flask development server...')
+    # run_flask_app()
+    run_simple('10.10.1.3', 5000, app, use_debugger=False)
+        
+    while waiting_for_receiver_confirmation:
+        time.sleep(1)  # Wait for 1 second before checking again
+    
+    print('Stopping Flask development server...')
     
     run_initial_process()
     
     for count in range(1):
+        encrypt_file()
         send_files()
 
         # Run the Flask app to handle file downloads

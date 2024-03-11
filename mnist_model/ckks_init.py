@@ -17,11 +17,12 @@ context.global_scale = 2**40
 
 # We prepare the context for the server, by making it public(we drop the secret key)
 server_context = context.copy()
+private_context = context.copy()
+
 server_context.make_context_public()
 
 # Context and ciphertext serialization
 server_context = server_context.serialize()
-
 # Serialize data to bytes using pickle
 # serialized_data_bytes = pickle.dumps(data_to_serialize)
 

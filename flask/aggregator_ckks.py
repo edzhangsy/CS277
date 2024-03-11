@@ -87,7 +87,7 @@ def run_process_file():
     global received_file_count
     
     # Define the command to run the separate Python file
-    command = ["python", "../mnist_model/plaintext_aggregate_fl.py"]
+    command = ["python", "../mnist_model/ckks_aggregate_fl.py"]
     received_file_count = 0
     
     try:
@@ -106,7 +106,7 @@ def send_files_back():
     
     # Send back the four files
     for i in range(4):
-        file_path = f"../mnist_model/aggregate/plain_weights{i}.json"  # Update with the actual file paths
+        file_path = f"../mnist_model/aggregate/ckks_weights{i}.json"  # Update with the actual file paths
         response_from_sender = send_file_to_sender(file_path, endpoint_on_sender)
         
         print(f"Response from sender node: {response_from_sender}")
@@ -136,7 +136,7 @@ def send_files_back():
     
     # Send back the four files
     for i in range(4):
-        file_path = f"../mnist_model/aggregate/plain_weights{i}.json"  # Update with the actual file paths
+        file_path = f"../mnist_model/aggregate/ckks_weights{i}.json"  # Update with the actual file paths
         response_from_sender = send_file_to_sender(file_path, endpoint_on_sender)
         
         print(f"Response from sender node: {response_from_sender}")
@@ -165,7 +165,65 @@ def send_file_to_sender(file_path, endpoint_on_sender):
     # Return the response from the receiver node
     return response.text
 
+def send_context():
+    global waiting_for_sender1_confirmation
+    # Define the endpoint on the sender node to handle file receive
+    endpoint_on_sender = f"http://{sender1_node_ip}/receive_file"
+
+    # Record the start time
+    start_time = time.time()
+    
+    file_path = f"../mnist_model/ckks/context.pkl"  # Update with the actual file paths
+    response_from_sender = send_file_to_sender(file_path, endpoint_on_sender)
+    
+    print(f"Response from sender node: {response_from_sender}")
+        
+    # Record the completion time
+    end_time = time.time()
+    
+    waiting_for_sender1_confirmation = True
+    
+    # Continuously check for confirmation from the sender
+    while waiting_for_sender1_confirmation:
+        send_confirmation_to_sender(sender1_node_ip)
+        time.sleep(1)  # Wait for 1 second before checking again
+        
+    waiting_for_sender1_confirmation = True
+    # Calculate and print the elapsed time
+    elapsed_time = end_time - start_time
+    print(f"Total time elapsed: {elapsed_time:.2f} seconds")
+    
+    ############################################################################################
+    global waiting_for_sender2_confirmation
+    # Define the endpoint on the sender node to handle file receive
+    endpoint_on_sender = f"http://{sender2_node_ip}/receive_file"
+
+    # Record the start time
+    start_time = time.time()
+    
+    file_path = f"../mnist_model/ckks/context.pkl"  # Update with the actual file paths
+    response_from_sender = send_file_to_sender(file_path, endpoint_on_sender)
+    
+    print(f"Response from sender node: {response_from_sender}")
+        
+    # Record the completion time
+    end_time = time.time()
+    
+    waiting_for_sender2_confirmation = True
+    
+    # Continuously check for confirmation from the sender
+    while waiting_for_sender2_confirmation:
+        send_confirmation_to_sender(sender2_node_ip)
+        time.sleep(1)  # Wait for 1 second before checking again
+        
+    waiting_for_sender2_confirmation = True
+    # Calculate and print the elapsed time
+    elapsed_time = end_time - start_time
+    print(f"Total time elapsed: {elapsed_time:.2f} seconds")
+
 if __name__ == '__main__':
+    send_context()
+    
     for count in range(1):
         # app.run(host='10.10.1.2', port=5000)
         print('Starting Flask development server...')

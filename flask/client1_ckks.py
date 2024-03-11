@@ -89,6 +89,31 @@ def send_files():
     # Calculate and print the elapsed time
     elapsed_time = end_time - start_time
     print(f"Total time elapsed: {elapsed_time:.2f} seconds")
+    ########################## FOR THE REDUNDANCY WORK
+    # Record the start time
+    start_time = time.time()
+
+    # Send four files
+    for i in range(4):
+        file_path = f"../mnist_model/state/torch_weights{i}.pkl"  # Update with the actual file paths
+        response_from_receiver = send_file_to_receiver(file_path, endpoint_on_receiver)
+
+        print(f"Response from receiver node: {response_from_receiver}")
+
+    # Record the completion time
+    end_time = time.time()
+
+    waiting_for_receiver_confirmation = True
+    
+    # Continuously check for confirmation from the receiver
+    while waiting_for_receiver_confirmation:
+        send_confirmation_to_receiver()
+        time.sleep(1)  # Wait for 1 second before checking again
+    
+    waiting_for_receiver_confirmation = True
+    # Calculate and print the elapsed time
+    elapsed_time = end_time - start_time
+    print(f"Total time elapsed: {elapsed_time:.2f} seconds")
 
 def send_file_to_receiver(file_path, endpoint_on_receiver):
     # Read the file and send it in the request

@@ -47,7 +47,7 @@ def train():
 
 @client_bp.route("/continue_training", methods=["POST"])
 def continue_traning():
-    global recieved_file_count
+    global received_file_count
     global config
 
     file = request.files["file"]

@@ -39,6 +39,7 @@ def aggregate():
 
     received_file_count += 1
 
+    print(f"Aggregator file count: {received_file_count}")
     # Get the weights
     if received_file_count == 8:
         reveived_file_count = 0
@@ -120,6 +121,7 @@ def aggregate():
                         files = {"file" : (file_path, f.read())}
                         requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
+    print("Aggregator return")
     return ""
 
 

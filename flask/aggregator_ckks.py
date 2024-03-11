@@ -220,8 +220,20 @@ def send_context():
     # Calculate and print the elapsed time
     elapsed_time = end_time - start_time
     print(f"Total time elapsed: {elapsed_time:.2f} seconds")
+    
+def run_context_init():
+    
+    # Define the command to run the separate Python file
+    command = ["python", "../mnist_model/ckks_init.py"]
+    
+    try:
+        # Execute the command
+        subprocess.run(command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing process_files.py: {e}")
 
 if __name__ == '__main__':
+    run_context_init()
     send_context()
     
     for count in range(1):

@@ -20,7 +20,7 @@ def train():
         t = value["type"]
         if value["type"] == "client":
             print(f"training: {key}, type {t}")
-                requests.get(f"http://{key}:5000/train")
+            requests.get(f"http://{key}:5000/train")
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])

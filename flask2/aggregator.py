@@ -20,7 +20,7 @@ def train():
             requests.get(f"http://{key}:5000/train")
     return "training"
 
-@aggregator_bp.route("/aggregate", methods=["POST"])
+@aggregator_bp.route("/", methods=["POST"])
 def aggregate():
     global received_file_count
     global iterations
@@ -95,7 +95,7 @@ def aggregate():
                     file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
                     with open(file_path, "rb") as f:
                         files = {"file" : (file_path, f.read())}
-                        requests.post(f"http://{clients[i]}/continue_training", files=files)
+                        requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
     return
 

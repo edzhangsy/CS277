@@ -22,7 +22,7 @@ def init(config):
 
     return
 
-@switch_bp.route("/add", methods=["POST"])
+@switch_bp.route("/", methods=["POST"])
 def add():
     global address
     global config
@@ -85,6 +85,6 @@ def add():
             file_path = "../mnist_model/weights/{address2}_torch_weights"+str(i)+".json"
             with open(file_path, "rb") as f:
                 files = {"file" : (file_path, f.read())}
-                request.post(address, files=files)
+                request.post(f"http://address:5000/", files=files)
 
     return

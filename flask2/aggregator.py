@@ -1,4 +1,5 @@
 from flask import Blueprint, current_app, request
+from multiprocessing import Pool
 import ast
 import requests
 import json
@@ -15,11 +16,12 @@ received_file_count = 0
 def train():
     global config
 
-    for key, value in config["others"].items():
-        t = value["type"]
-        if value["type"] == "client":
-            print(f"training: {key}, type {t}")
-            requests.get(f"http://{key}:5000/train")
+    with Pool(num_clients()) as pool:
+        for key, value in config["others"].items():
+            t = value["type"]
+            if value["type"] == "client":
+                print(f"training: {key}, type {t}")
+                pool.apply_async(requests.get,[f"http://{key}:5000/train"])
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])
@@ -93,13 +95,14 @@ def aggregate():
 
         print(f"iterations: {iterations}")
         # Send the results
-        if iterations > 0:
-            for i in range(len(clients)):
-                for j in range(4):
-                    file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
-                    with open(file_path, "rb") as f:
-                        files = {"file" : (file_path, f.read())}
-                        requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
+        with Pool(num_clients()) as pool:
+            if iterations > 0:
+                for i in range(len(clients)):
+                    for j in range(4):
+                        file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
+                        with open(file_path, "rb") as f:
+                            files = {"file" : (file_path, f.read())}
+                            requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
     return ""
 

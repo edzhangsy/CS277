@@ -16,8 +16,9 @@ def train():
     global config
 
     for key, value in config["others"].items():
-        print(f"train: {key}")
+        t = value["type"]
         if value["type"] == "client":
+            print(f"training: {key}, type {t}")
             requests.get(f"http://{key}:5000/train")
     return "training"
 
@@ -39,7 +40,7 @@ def aggregate():
         address1 = sender_address[0]
         address2 = sender_address[1]
         for i in range(4):
-            with open(f"../mnist_model/weights/{address_1}_torch_weights"+str(i)+".json", "r") as json_file:
+            with open(f"../mnist_model/weights/{address1}_torch_weights"+str(i)+".json", "r") as json_file:
                 if i == 0:
                     weight0 = ast.literal_eval(json_file.read())
                 elif i == 1:
@@ -50,7 +51,7 @@ def aggregate():
                     bias1 = ast.literal_eval(json_file.read())
 
         for i in range(4):
-            with open(f"../mnist_model/weights/{address_2}_torch_weights"+str(i)+".json", "r") as json_file:
+            with open(f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".json", "r") as json_file:
                 if i == 0:
                     weight2 = ast.literal_eval(json_file.read())
                 elif i == 1:
@@ -89,6 +90,7 @@ def aggregate():
 
         clients = clients_address()
 
+        print(f"iterations: {iterations}")
         # Send the results
         if iterations > 0:
             for i in range(len(clients)):

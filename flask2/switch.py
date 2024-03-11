@@ -38,6 +38,7 @@ def add():
     receive_address = config["receive"]
 
     if received_file_count == 8:
+        received_file_count = 0
         # Open files and get weights
         receive1 = receive_address[0]
         receive2 = receive_address[1]

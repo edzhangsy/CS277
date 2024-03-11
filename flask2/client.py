@@ -45,7 +45,7 @@ def train():
     return ""
 
 
-@client_bp.route("/continue_traing", methods=["POST"])
+@client_bp.route("/continue_training", methods=["POST"])
 def continue_traning():
     global recieved_file_count
     global config
@@ -56,6 +56,7 @@ def continue_traning():
     received_file_count += 1
 
     if received_file_count == 4:
+        received_file_count = 0
         # Deserialize and remove encryption
 
         command = ["python", "../mnist_model/replace_weights_mnist.py"]

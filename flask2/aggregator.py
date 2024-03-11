@@ -21,7 +21,8 @@ def train():
             t = value["type"]
             if value["type"] == "client":
                 print(f"training: {key}, type {t}")
-                pool.apply_async(send_get, (f"http://{key}:5000/train",))
+                res = pool.apply_async(send_get, (f"http://{key}:5000/train",))
+                res.get()
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])

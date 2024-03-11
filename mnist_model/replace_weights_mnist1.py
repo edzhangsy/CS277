@@ -3,10 +3,8 @@ from torch import nn
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor, Lambda
-import torch
-from torch.utils.data import Dataset
-from json import JSONEncoder
 import json
+import ast
 
 from torchvision import transforms
 from PIL import Image
@@ -14,16 +12,16 @@ import numpy as np
 
 ### Grabbing MNIST data with torchvision datasets
 training_data = datasets.MNIST(
-    root = 'data',
-    train = True,
-    download = True,
-    transform = ToTensor()
+   root = 'data',
+   train = True,
+   download = True,
+   transform = ToTensor()
 )
 test_data = datasets.MNIST(
-    root = 'data',
-    train = False,
-    download = True,
-    transform = ToTensor()
+   root = 'data',
+   train = False,
+   download = True,
+   transform = ToTensor()
 )
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -81,6 +79,20 @@ class NeuralNetwork(nn.Module):
 model = NeuralNetwork().to(device)
 #model = NeuralNetwork().to('cpu')
 
+state_dict = model.state_dict()
+
+keys_list = ['linear_relu_stack.0.weight', 'linear_relu_stack.0.bias', 'linear_relu_stack.2.weight', 'linear_relu_stack.2.bias']
+
+for count in range(len(keys_list)):
+    with open('../mnist_model/weights/torch_weights'+str(count)+'.json', 'r') as json_file:
+        state_dict[keys_list[count]] = torch.Tensor(ast.literal_eval(json_file.read()))
+
+#for count in range(len(keys_list)):
+#    with open('./aggregate/ckks_weights'+str(count)+'.json', 'r') as json_file:
+#       state_dict[keys_list[count]] = torch.Tensor(ast.literal_eval(json_file.read()))
+
+model.load_state_dict(state_dict)
+
 lr = 1e-3
 bs = 64
 epochs = 5
@@ -119,30 +131,12 @@ def test_data(model):
     corrects /= size
     print(f"Test loss: \n Accuracy: {(100*corrects):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
-for t in range(5):
+for t in range(4):
     train_data(model)
     test_data(model)
 
-#for param in model.parameters():
-#    print(param)
-#    print(len(param))
-
-for param_tensor in model.state_dict():
-    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
-#    print(param_tensor, "\t", model.state_dict()[param_tensor])
-
-### Standard serialized save
-#torch.save(model.state_dict(), './state/model.pth')
-
-class EncodeTensor(JSONEncoder,Dataset):
-    def default(self, obj):
-        if isinstance(obj, torch.Tensor):
-            return obj.cpu().detach().numpy().tolist()
-        return super(EncodeTensor, self).default(obj)
-
-#with open('torch_weights.json', 'w') as json_file:
-#    json.dump(model.state_dict(), json_file,cls=EncodeTensor)
-
 for count, param_tensor in enumerate(model.state_dict()):
-    with open('../mnist_model/weights/torch_weights'+str(count)+'.json', 'w') as json_file:
-        json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)
+    with open("../mnist_model/weights/torch_weights"+str(count)+".json", "w") as json_file:
+        json.dump(model.state_dict()[param_tensor], json_file, cls=EncodeTensor)
+
+#torch.save(model.state_dict(), './state/model.pth')

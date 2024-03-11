@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, request
 import requests
 import subprocess
 
@@ -42,7 +42,7 @@ def train():
             files = {"file" : (file_path, f.read())}
             response = requests.post(f"http://{switch_address}:5000/", files=files)
 
-    return
+    return ""
 
 
 @client_bp.route("/continue_traing", methods=["POST"])
@@ -76,4 +76,4 @@ def continue_traning():
                     files = {"file" : (file_path, f.read())}
                     requests.post(f"http://{switch_address}:5000/", files=files)
 
-        return
+        return ""

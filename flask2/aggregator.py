@@ -98,7 +98,7 @@ def aggregate():
                         files = {"file" : (file_path, f.read())}
                         requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
-    return
+    return ""
 
 
 def num_clients():
@@ -117,7 +117,7 @@ def clients_address():
 
     clients = []
 
-    for key, value in config["others"].items:
+    for key, value in config["others"].items():
         if value["types"] == client:
             clients.append(key)
 

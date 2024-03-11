@@ -120,7 +120,7 @@ def clients_address():
     clients = []
 
     for key, value in config["others"].items():
-        if value["type"] == client:
+        if value["type"] == "client":
             clients.append(key)
 
     return clients

@@ -87,6 +87,6 @@ def add():
             file_path = f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".json"
             with open(file_path, "rb") as f:
                 files = {"file" : (file_path, f.read())}
-                request.post(f"http://{address}:5000/", files=files)
+                requests.post(f"http://{address}:5000/", files=files)
 
     return ""

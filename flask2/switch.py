@@ -26,6 +26,7 @@ def init(config):
 def add():
     global address
     global config
+    global received_file_count
     
     # Get files
     file = request.files["file"]

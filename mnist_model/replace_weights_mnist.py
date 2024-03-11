@@ -136,7 +136,7 @@ for t in range(4):
     test_data(model)
 
 for count, param_tensor in enumerate(model.state_dict()):
-    with open("./weights/torch_weights"+str(count)+".json", "w") as json_file:
+    with open("../mnist_model/weights/torch_weights"+str(count)+".json", "w") as json_file:
         json.dump(model.state_dict()[param_tensor], json_file, cls=EncodeTensor)
 
 #torch.save(model.state_dict(), './state/model.pth')

@@ -50,6 +50,7 @@ def continue_traning():
     global received_file_count
     global config
 
+    print("Continue Training")
     file = request.files["file"]
     file.save(f"{file.filename}")
 

@@ -17,7 +17,7 @@ def train():
     for key, value in config["others"].items():
         print(f"train: {key}")
         if value["type"] == "client":
-            requests.get(f"http://{key}/train")
+            requests.get(f"http://{key}:5000/train")
     return "training"
 
 @aggregator_bp.route("/aggregate", methods=["POST"])

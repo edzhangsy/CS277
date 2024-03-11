@@ -7,6 +7,7 @@ import torch
 from torch.utils.data import Dataset
 from json import JSONEncoder
 import json
+import os
 
 from torchvision import transforms
 from PIL import Image
@@ -144,6 +145,7 @@ class EncodeTensor(JSONEncoder,Dataset):
 #    json.dump(model.state_dict(), json_file,cls=EncodeTensor)
 
 for count, param_tensor in enumerate(model.state_dict()):
-    print("writing file")
+    path = os.path.abspath(os.curdir)
+    print(f"writing file at: {path}")
     with open('./weights/torch_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)

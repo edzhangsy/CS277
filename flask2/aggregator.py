@@ -77,7 +77,7 @@ def aggregate():
         aggregation_results[1] = bias0 + bias2
         aggregation_results[1] = [element / num for element in aggregation_results[1]]
 
-        aggregation_result[2] = weight1 + weight3
+        aggregation_results[2] = weight1 + weight3
         aggregation_results[2] = [[element / num for element in sublist] for sublist in aggregation_results[2]]
 
         aggregation_results[3] = bias1 + bias3

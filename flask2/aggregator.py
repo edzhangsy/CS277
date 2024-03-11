@@ -21,7 +21,7 @@ def train():
             t = value["type"]
             if value["type"] == "client":
                 print(f"training: {key}, type {t}")
-                pool.apply_async(requests.get,[f"http://{key}:5000/train"])
+                pool.apply_async(requests.get, (f"http://{key}:5000/train",))
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])
@@ -102,7 +102,7 @@ def aggregate():
                         file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
                         with open(file_path, "rb") as f:
                             files = {"file" : (file_path, f.read())}
-                            requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
+                            pool.apply_async(requests.post, (f"http://{clients[i]}:5000/continue_training", files=files),)
 
     return ""
 

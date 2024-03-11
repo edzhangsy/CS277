@@ -113,6 +113,7 @@ def aggregate():
         print(f"iterations: {iterations}")
         # Send the results
         if iterations > 0:
+            iterations -= iterations
             for i in range(len(clients)):
                 for j in range(4):
                     file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"

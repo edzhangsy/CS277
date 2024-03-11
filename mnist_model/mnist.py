@@ -147,5 +147,5 @@ class EncodeTensor(JSONEncoder,Dataset):
 for count, param_tensor in enumerate(model.state_dict()):
     path = os.path.abspath(os.curdir)
     print(f"writing file at: {path}")
-    with open('./weights/torch_weights'+str(count)+'.json', 'w') as json_file:
+    with open('../mnist_model/weights/torch_weights'+str(count)+'.json', 'w') as json_file:
         json.dump(model.state_dict()[param_tensor], json_file,cls=EncodeTensor)

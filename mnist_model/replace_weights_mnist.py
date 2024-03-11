@@ -84,7 +84,7 @@ state_dict = model.state_dict()
 keys_list = ['linear_relu_stack.0.weight', 'linear_relu_stack.0.bias', 'linear_relu_stack.2.weight', 'linear_relu_stack.2.bias']
 
 for count in range(len(keys_list)):
-    with open('./weights/torch_weights'+str(count)+'.json', 'r') as json_file:
+    with open('../mnist_model/weights/torch_weights'+str(count)+'.json', 'r') as json_file:
         state_dict[keys_list[count]] = torch.Tensor(ast.literal_eval(json_file.read()))
 
 #for count in range(len(keys_list)):

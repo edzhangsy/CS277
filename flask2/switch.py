@@ -77,10 +77,10 @@ def add():
         #add_results[2] = weight1 + weight3
         #add_results[3] = bias1 + bias3
 
-        aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight0, weight2)]
-        aggregation_results[1] = [element1 + element2 for element1, element2 in zip(bias0, bias2)]
-        aggregation_results[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight1, weight3)]
-        aggregation_results[3] = [element1 + element2 for element1, element2 in zip(bias1, bias3)]
+        add_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight0, weight2)]
+        add_results[1] = [element1 + element2 for element1, element2 in zip(bias0, bias2)]
+        add_results[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight1, weight3)]
+        add_results[3] = [element1 + element2 for element1, element2 in zip(bias1, bias3)]
 
         address2 = config["ip"]
         # Save the weights

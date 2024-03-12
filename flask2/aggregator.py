@@ -3,6 +3,7 @@ from multiprocessing import Pool
 import ast
 import requests
 import json
+import post
 
 aggregator_bp = Blueprint('aggregator', __name__)
 
@@ -161,8 +162,8 @@ def sender_addr():
 
     return address
 
-def requests_post(address, files):
+#def requests_post(address, files):
 
-    requests.post(address, files=files)
+#    requests.post(address, files=files)
 
-    return
+#    return

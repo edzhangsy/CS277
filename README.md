@@ -17,7 +17,7 @@ In this repository we aim to benchmark the hinderance that Fully Homomorphic Enc
     - [Installation](#installation-1)
   - [TenSEAL](#tenseal)
 - [ML Model Running on Pytorch](#ml-model-running-on-pytorch)
-- [Senarios](#senarios)
+- [Scenarios](#scenarios)
   - [Base Case](#base-case)
   - [Base Case + FHE](#base-case-with-fhe)
   - [Base Case + FHE + In-Network Processing](#base-case-with-fhe-with-in-network-processing)
@@ -232,15 +232,15 @@ We have made some modifications to the `mnist.py` file where it writes the weigh
 
 When we complete our Federated Learning model, the client will call the `replace_weights_mnist.py` where it will load the averaged weights returned by the Aggregator and resume training.
 
-## Senarios
+## Scenarios
 
-In this section we will describe in more detail the the simulation logic for each senario.
+In this section we will describe in more detail the the simulation logic for each scenario.
 
 ### Base Case
 
 For the Base Case, the `Client Nodes` will begin by training its ML models locally. 
 Then after some training iterations, the client will send its parameters up to the `Aggregator Nodes`. 
-In this senario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
+In this scenario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
 
 Once the `Aggregator Node` receives all the necessary files it will aggregate, average them, then send the new set of files back to all `Client Nodes`.
 
@@ -265,4 +265,4 @@ When the Aggregator receives this ciphertext it will then call `../mnist_model/c
 - Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json`
 ### Base Case with FHE with In-Network Processing
 
-In our last senario
+In our last scenario

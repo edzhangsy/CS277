@@ -11,7 +11,7 @@ log = {}
 #context = None
 iterations = 0
 received_file_count = 0
-pool = Pool(8)
+pool = Pool(16)
 
 @aggregator_bp.route("/train")
 def train():

@@ -5,40 +5,69 @@ In this repository we aim to benchmark the hinderance that Fully Homomorphic Enc
 ## Contents
 
 - [Introduction](#introduction)
-  - [Core Concepts](#core-concepts)
-  - [Homomorphic Encryption](#homomorphic-encryption)
+  <!-- - [Core Concepts](#core-concepts) -->
+  <!-- - [Homomorphic Encryption](#homomorphic-encryption) -->
   - [Metrics](#metrics)
 - [Running FL Simulation](#running-fl-simulation)
   - [Installation](#installation)
   - [Flask Setup](#flask-setup)
   - [Development](#development)
-- [SEAL](#seal)
+- [SEAL](#microsoft-seal)
   - [PySEAL](#pyseal)
+    - [Installation](#installation-1)
   - [TenSEAL](#tenseal)
 - [ML Model Running on Pytorch](#ml-model-running-on-pytorch)
 - [Senarios](#senarios)
   - [Base Case](#base-case)
   - [Base Case + FHE](#base-case-with-fhe)
-  - [Base Case + FHE + In-Network Computing](#base-case-with-fhe-with-in-network-computing)
+  - [Base Case + FHE + In-Network Processing](#base-case-with-fhe-with-in-network-processing)
 
 ## Introduction
 
 Our project simulates a Federated Learning Model (FL) with its topology as shown below.
 
-![FL Model](image.png)
+<center>
+
+![FL Model](image-1.png)
+
+</center>
 
 There are three separate tests that we run:
 1. [Base Case](#base-case) - This example will only transfer information in plaintext under our FL model.
 2. [Base Case + FHE](#base-case-with-fhe) - This example will transfer information under FHE and do computation only in the aggregator node under our FL model.
-3. [Base Case + FHE + In-Network Computing](#base-case-with-fhe-with-in-network-computing) - This example attempts to optimize and improve the efficiency of the process by introducing in-network computing, which offloads some of the computation to the middle switches in our FL model.
+3. [Base Case + FHE + In-Network Processing](#base-case-with-fhe-with-in-network-processing) - This example attempts to optimize and improve the efficiency of the process by introducing in-network processing, which offloads some of the computation to the middle switches in our FL model.
 
-## Metrics
+We successfully implement our FL model with the use of 3 major libraries:
+1. [Flask](https://flask.palletsprojects.com/en/3.0.x/) - A python web application framework that enables our servers to listen and transfer data. We modify the routes to simulate a FL model environment.
+2. [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) - A library that enables homomorphic encryption operations to be done on tensors. We leveraged this library to easily work with ML applications.
+3. [Pytorch](https://pytorch.org) - A python framework that enables us to effortlessly implement ML models.
 
-The motivation for this project was based on wanting to understand
+### Metrics
+
+The motivation for this project was based on wanting to understand how much applications would suffer when FHE is implemented in order to protect users privacy. 
+We wanted to gain an understanding and see how feasible it is to take the tradeoff that FHE provides. 
+For this reason, there are several metrics that we would like to investigate.
+
+<center>
+
+| Metric Name | Base | Base + FHE | Base + FHE + INP |
+|:------------:|:-------:|:-------:|:-------:|
+| Peak Memory (Gb)   | **<span style="color: red;">10</span>** | 20      | 15      |
+| Process Time (s)    | 5                  | **<span style="color: blue; font-weight: bold;">8</span>**  | 12      |
+| Max File Size (Gb)   | **<span style="color: green;">30</span>** | 25      | 40      |
+| Time Saved (s)   | 30 | **<span style="color: cyan;">25</span>**      | 40      |
+
+</center>
+
+Acronym: **INC**[^1].
+
+[^1]: In-Network Processing
 
 ## Running FL Simulation
 
-## Installation
+In this section we will describe the needed requirements and interface setups for our FL model simulation.
+
+### Installation
 
 Clone this GitHub repository
 
@@ -58,7 +87,7 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-## Flask Setup
+### Flask Setup
 
 We combine the code for three roles in one repository.
 
@@ -66,9 +95,9 @@ Use the `python main.py agg` to start the server.
 
 For other servers, just use the `python main.py` to start
 
-> remember to start the server in background so it don't be killed when you disconnet you ssh.
+> Note: Remember to start the server in background so it doesn't get killed when you disconnet your ssh.
 
-The aggregator will read the `config.json` file.
+The aggregator will first read the `config.json` file.
 Then it will call the other machines' `config` interface and send them their config.
 The config for other clients are stored under the `others` dictionary.
 The key is the IP address, The value is the config.
@@ -76,22 +105,21 @@ Send the config to the corresponding client.
 After receiving the config, which is a json from the aggregator, the other servers will register the blueprint dynamically based on the `type` in the config.
 Check the `config.json` file and add configs if needed.
 
-The configs should be self-explained.
+The configs should be self-explainatory.
 
-When the type if client, there are `client_number` and `index`.
+When the type is client, there is `client_number` and `index`.
 Which indicates how many clients is used in this experiment, and current client's index.
 This is useful to divide the training and testing data set.
 For example, a client is index 0 among 4 clients, so he will slice the data set into 4 slices, and he operates on the index 0 of the slices.
 
+When you want to start another experiment, just edit the `config.json` and restart the aggregator.
 
-When you want to start another experiment, just edit the `config.json`, restart the aggregator.
-
-## Development
+### Development
 
 Because each kind of server have different kinds of interfaces, we separate them into different blueprints.
-See the flask documentation for what is blueprint.
+See the flask documentation for what is [blueprint](https://flask.palletsprojects.com/en/3.0.x/blueprints/).
 If you are developing the `client`, just edit the `client.py` and add interfaces.
-The config that received from the server is stored in the `config` variable in `client.py` or `switch.py`
+The config that is received from the server is stored in the `config` variable in `client.py` or `switch.py`
 For example, if you are developing the client, the config that received from the server should be accessible in local `config` file.
 If you want to send some data to the switch, just read the config, and get which address you should send to.
 Then send to the interface of that address, for example, `http://10.10.1.5:5000/s/receive`.
@@ -149,11 +177,17 @@ For convenience, let's use the node14, `10.10.1.15` as the aggregator.
 
 *Maybe you should open the port 5000 using the iptables*
 
-## PySEAL
+## Microsoft SEAL
+
+SEAL is an open source homomorphic encryption library developed by the Cryptography and Privacy Research Group at Microsoft.
+
+For more information, visit the [Microsoft SEAL](https://github.com/microsoft/SEAL) GitHub repository.
+
+### PySEAL
 
 Initially the PySEAL library was chosen for its ease of use being directly compatible with our setup written in Python.
 
->Note: Microsoft SEAL library does not work with Tensors out of the box.
+> Note: Microsoft SEAL library does not work with Tensors out of the box.
 
 Since PySEAL simply invokes a python wrapper to the [Microsoft SEAL](https://github.com/microsoft/SEAL) library, we will have to modify futher if we want to use it on Tensors.
 
@@ -173,7 +207,7 @@ Because the seal-python is using the pybind to bind the original c++ library, we
 It's useful to use the `dir()` function to look at what methods are available for use.
 For example, after generating the `secret_key`, use the `dir(secret_key)` and we can find the `save`, `load` and `to_string` methods.
 
-## TenSEAL
+### TenSEAL
 
 TanSEAL is a library built on top of the Microsoft SEAL library.
 
@@ -185,21 +219,27 @@ For more information, visit the [TenSEAL](https://github.com/OpenMined/TenSEAL/t
 
 ## ML Model Running on Pytorch
 
-For our ML model, we took an existing Pytorch implementation of a basic 2-layer neural network training on the MNIST dataset.
+For our ML model, we took an existing Pytorch implementation of a basic 2-layer neural network training on the [MNIST dataset](https://git-disl.github.io/GTDLBench/datasets/mnist_datasets/).
 
-We have made some modifications to the *mnist.py* file where it writes the weights and biases vectors into a json file allowing us to call SEAL and encrypt the training vectors directly with FHE.
+We have made some modifications to the `mnist.py` file where it writes the weights and biases vectors into a json file allowing us to then call TenSEAL and encrypt the training tensors directly with FHE.
 
-When we complete our Federated Learning model, the client will call the *replace_weights_mnist.py* where it will load the averaged weights returned by the Aggregator and resume training.
+When we complete our Federated Learning model, the client will call the `replace_weights_mnist.py` where it will load the averaged weights returned by the Aggregator and resume training.
 
-## Base Case
+## Senarios
 
-For the Base Case, the `Client Nodes` will begin by training its ML models locally. Then after some training iterations, the client will send its parameters up to the `Aggregator Nodes`. In this senario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
+In this section we will describe in more detail the the simulation logic for each senario.
+
+### Base Case
+
+For the Base Case, the `Client Nodes` will begin by training its ML models locally. 
+Then after some training iterations, the client will send its parameters up to the `Aggregator Nodes`. 
+In this senario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
 
 Once the `Aggregator Node` receives all the necessary files it will aggregate, average them, then send the new set of files back to all `Client Nodes`.
 
 Finally, once the `Client Nodes` receives the files back from the `Aggregator Node`, it will updates its values in the ML model and continue training through a warmstart.
 
-## Base Case with FHE
+### Base Case with FHE
 
 Aggregator begins the process with calling `../mnist_model/ckks_init.py` file
 - This file generates a context used in our FHE
@@ -216,6 +256,6 @@ When the Aggregator receives this ciphertext it will then call `../mnist_model/c
 - In the case that the secret key context is saved, you can just use `lines 137-153` which thats the weight parameters in bytes to turn it back into tensors.
 - THen Calculations are done on it and it will decrypt the ciphertext to plaintext and can be ready to forward the files back to the client for retraining
 - Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json`
-## Base Case with FHE with In-Network Computing
+### Base Case with FHE with In-Network Processing
 
 In our last senario

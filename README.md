@@ -45,7 +45,8 @@ We successfully implement our FL model with the use of 3 major libraries:
 Acronym: **FL**[^1].\
 Acronym: **FHE**[^2].
 
-[^1]: Federated Learning\
+[^1]: Federated Learning
+
 [^2]: Fully Homomorphic Excryption
 
 ### Metrics

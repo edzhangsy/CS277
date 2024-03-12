@@ -16,6 +16,7 @@ pool = Pool(8)
 @aggregator_bp.route("/train")
 def train():
     global config
+    global pool
 
     print("Aggregator Train")
     for key, value in config["others"].items():
@@ -31,6 +32,7 @@ def aggregate():
     global received_file_count
     global iterations
     global config
+    global pool
 
     print("Aggregator Continue Training")
     # Get files and save

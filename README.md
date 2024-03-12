@@ -1,5 +1,36 @@
-# the 277 project
+# The 277 project
 
+In this repository we aim to benchmark the hinderance that Fully Homomorphic Encryption (FHE) introduces, impacting efficiency.
+
+Our project simulates a Federated Learning Model (FL) with its topology as shown below.
+
+![FL Model](image.png)
+
+There are three separate tests that we run:
+1. [Base Case](#base-case) - This example will only transfer information in plaintext under our FL model.
+2. [Base Case + FHE](#base-case-with-fhe) - This example will transfer information under FHE and do computation only in the aggregator node under our FL model.
+3. [Base Case + FHE + In-Network Computing](#base-case-with-fhe-with-in-network-computing) - This example attempts to optimize and improve the efficiency of the process by introducing in-network computing, which offloads some of the computation to the middle switches in our FL model.
+
+## Installation
+
+Clone this GitHub repository
+
+```sh
+git clone https://github.com/edzhangsy/CS277.git
+```
+
+Change Directory into the folder
+
+```sh
+cd CS277
+```
+
+Make the setup file an executable and run
+```sh
+chmod +x setup.sh
+./setup.sh
+```
+## Running FL Simulation
 We combine the code for three roles in one repository.
 
 Use the `python main.py agg` to start the server.
@@ -26,7 +57,7 @@ For example, a client is index 0 among 4 clients, so he will slice the data set 
 
 When you want to start another experiment, just edit the `config.json`, restart the aggregator.
 
-## development
+## Development
 
 Because each kind of server have different kinds of interfaces, we separate them into different blueprints.
 See the flask documentation for what is blueprint.
@@ -89,9 +120,10 @@ For convenience, let's use the node14, `10.10.1.15` as the aggregator.
 
 *Maybe you should open the port 5000 using the iptables*
 
-## SEAL
+## PySEAL
 
-seal library should be compiled first.
+Initially the PySEAL library was used for its ease of use being directly compatible 
+Seal library should be compiled first.
 After compilation, you can see the `seal.*.so`
 Copy it under the directory of the this repo, and you should be able to use it by `import seal`
 
@@ -103,6 +135,12 @@ Because the seal-python is using the pybind to bind the original c++ library, we
 It's useful to use the `dir()` function to look at what methods are available for use.
 For example, after generating the `secret_key`, use the `dir(secret_key)` and we can find the `save`, `load` and `to_string` methods.
 
+## TenSEAL
+
+TanSEAL is an add-on to the SEAL library by microsoft for Machine Learning purposes by expanding on the ability ot deal with Tensors as well as the standard Vectors.
+
+For more informatino visti the [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) GitHub repository
+
 ## ML Model Running on Pytorch
 
 For our ML model, we took an existing Pytorch implementation of a basic 2-layer neural network training on the MNIST dataset.
@@ -111,10 +149,27 @@ We have made some modifications to the *mnist.py* file where it writes the weigh
 
 When we complete our Federated Learning model, the client will call the *replace_weights_mnist.py* where it will load the averaged weights returned by the Aggregator and resume training.
 
-![alt text](./images/mnist.png)
-*This image showcases the use of saving and loading our model parameters to resume training.*
+## Base Case
 
-## test
+Some content for Section 1.
 
-I have added the `test.py`.
-The script will read part of the `config.json` and send out to the server, calling the config function.
+## Base Case with FHE
+
+Aggregator begins the process with calling `../mnist_model/ckks_init.py` file
+- This file generates a context used in our FHE
+- It holds the context with its secret key under the `private_context` variable
+- It also creates a public version that removes the secret key under the `server_context` variable
+    - This public key is then forwarded down the tree (to the switch and client nodes)
+
+When Client receives the public context, it is ready to train the model and encrypt the parameters. The encryption process is done through calling the  `../mnist_model/ckks_weights_client1.py` file
+- This file reads in the public context in `lines 7-16 `
+- Then it encrypts the message in `lines 48-51`
+- Finally it serializes the cuphertext and saves it under `../mnist_model/ckks/ckks_weights'{i}'.pkl`
+
+When the Aggregator receives this ciphertext it will then call `../mnist_model/ckks_aggregate_fl.py` file
+- In the case that the secret key context is saved, you can just use `lines 137-153` which thats the weight parameters in bytes to turn it back into tensors.
+- THen Calculations are done on it and it will decrypt the ciphertext to plaintext and can be ready to forward the files back to the client for retraining
+- Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json`
+## Base Case with FHE with In-Network Computing
+
+Some content for Section 3.

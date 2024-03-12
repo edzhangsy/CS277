@@ -18,6 +18,12 @@ context.global_scale = 2**40
 # We prepare the context for the server, by making it public(we drop the secret key)
 server_context = context.copy()
 private_context = context.copy()
+sk = context.secret_key()
+# print(dir(sk))
+# sk.data.save('./secret.txt')
+# print(type(server_context))
+# print(dir(sk.data.data))
+# sk.data.load(server_context, './secret.txt')
 
 server_context.make_context_public()
 

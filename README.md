@@ -59,7 +59,7 @@ For this reason, there are several metrics that we would like to investigate.
 
 </center>
 
-Acronym: **INC**[^1].
+Acronym: **INP**[^1].
 
 [^1]: In-Network Processing
 
@@ -131,7 +131,7 @@ Just use some dictionary to store the logs.
 
 For example, the log dictionary can be looked like this.
 
-```
+```json
 {
     "iteration": [
         {

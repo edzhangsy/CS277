@@ -42,6 +42,12 @@ We successfully implement our FL model with the use of 3 major libraries:
 2. [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) - A library that enables homomorphic encryption operations to be done on tensors. We leveraged this library to easily work with ML applications.
 3. [Pytorch](https://pytorch.org) - A python framework that enables us to effortlessly implement ML models.
 
+Acronym: **FL**[^1].\
+Acronym: **FHE**[^2].
+
+[^1]: Federated Learning\
+[^2]: Fully Homomorphic Excryption
+
 ### Metrics
 
 The motivation for this project was based on wanting to understand how much applications would suffer when FHE is implemented in order to protect users privacy. 
@@ -59,9 +65,9 @@ For this reason, there are several metrics that we would like to investigate.
 
 </center>
 
-Acronym: **INP**[^1].
+Acronym: **INP**[^3].
 
-[^1]: In-Network Processing
+[^3]: In-Network Processing
 
 ## Running FL Simulation
 

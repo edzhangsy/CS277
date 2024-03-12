@@ -121,7 +121,7 @@ def aggregate():
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
-                        pool.apply_async(aggregator.requests_post, (f"http://{clients[i]}:5000/continue_training", files))
+                        pool.apply_async(requests.post, (f"http://{clients[i]}:5000/continue_training", kwargs={"files": files}))
                         #requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
     print("Aggregator return")

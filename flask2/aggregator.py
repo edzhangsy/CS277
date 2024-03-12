@@ -3,7 +3,6 @@ from multiprocessing import Pool
 import ast
 import requests
 import json
-import post
 
 aggregator_bp = Blueprint('aggregator', __name__)
 
@@ -122,7 +121,7 @@ def aggregate():
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
-                        pool.apply_async(post.requests_post, (f"http://{clients[i]}:5000/continue_training", files))
+                        pool.apply_async(aggregator.requests_post, (f"http://{clients[i]}:5000/continue_training", files))
                         #requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
 
     print("Aggregator return")
@@ -162,8 +161,8 @@ def sender_addr():
 
     return address
 
-#def requests_post(address, files):
+def requests_post(address, files):
 
-#    requests.post(address, files=files)
+    requests.post(address, files=files)
 
-#    return
+    return

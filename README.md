@@ -122,8 +122,17 @@ For convenience, let's use the node14, `10.10.1.15` as the aggregator.
 
 ## PySEAL
 
-Initially the PySEAL library was used for its ease of use being directly compatible 
-Seal library should be compiled first.
+Initially the PySEAL library was chosen for its ease of use being directly compatible with our setup written in Python.
+
+>Note: Microsoft SEAL library does not come with working with Tensors directly.
+
+Since PySEAL simply invokes a python wrapper to the [Microsoft SEAL](https://github.com/microsoft/SEAL) library, we will have to modify futher if we want to use it on Tensors.
+
+Below are the directions for running PySEAL and for more information visit the [PySEAL](https://github.com/Lab41/PySEAL/tree/master) GitHub repository.
+
+#### Installation
+
+PySeal library should be compiled first.
 After compilation, you can see the `seal.*.so`
 Copy it under the directory of the this repo, and you should be able to use it by `import seal`
 
@@ -137,9 +146,11 @@ For example, after generating the `secret_key`, use the `dir(secret_key)` and we
 
 ## TenSEAL
 
-TanSEAL is an add-on to the SEAL library by microsoft for Machine Learning purposes by expanding on the ability ot deal with Tensors as well as the standard Vectors.
+TanSEAL is a library built on top of the Microsoft SEAL library.
 
-For more informatino visti the [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) GitHub repository
+It introduces extra features such as `Dot Product` and `Tensors` that makes Machine Learning applications easy to invoke FHE.
+
+For more information visit the [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) GitHub repository
 
 ## ML Model Running on Pytorch
 

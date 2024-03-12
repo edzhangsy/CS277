@@ -11,7 +11,7 @@ log = {}
 #context = None
 iterations = 0
 received_file_count = 0
-#pool = Pool(8)
+pool = Pool(8)
 
 @aggregator_bp.route("/train")
 def train():
@@ -22,8 +22,8 @@ def train():
         t = value["type"]
         if value["type"] == "client":
             print(f"training: {key}, type {t}")
-            requests.get(f"http://{key}:5000/train")
-            #pool.apply_async(requests.get, (f"http://{key}:5000/train",))
+            #requests.get(f"http://{key}:5000/train")
+            pool.apply_async(requests.get, (f"http://{key}:5000/train",))
     return "training"
 
 @aggregator_bp.route("/", methods=["POST"])
@@ -75,7 +75,6 @@ def aggregate():
                 3: None,
                 }
 
-        print("Aggregate weights")
         num = num_clients()
 
         # Get the average

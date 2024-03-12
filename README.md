@@ -2,6 +2,27 @@
 
 In this repository we aim to benchmark the hinderance that Fully Homomorphic Encryption (FHE) introduces, impacting efficiency.
 
+## Contents
+
+- [Introduction](#introduction)
+  - [Core Concepts](#core-concepts)
+  - [Homomorphic Encryption](#homomorphic-encryption)
+  - [Metrics](#metrics)
+- [Running FL Simulation](#running-fl-simulation)
+  - [Installation](#installation)
+  - [Flask Setup](#flask-setup)
+  - [Development](#development)
+- [SEAL](#seal)
+  - [PySEAL](#pyseal)
+  - [TenSEAL](#tenseal)
+- [ML Model Running on Pytorch](#ml-model-running-on-pytorch)
+- [Senarios](#senarios)
+  - [Base Case](#base-case)
+  - [Base Case + FHE](#base-case-with-fhe)
+  - [Base Case + FHE + In-Network Computing](#base-case-with-fhe-with-in-network-computing)
+
+## Introduction
+
 Our project simulates a Federated Learning Model (FL) with its topology as shown below.
 
 ![FL Model](image.png)
@@ -10,6 +31,12 @@ There are three separate tests that we run:
 1. [Base Case](#base-case) - This example will only transfer information in plaintext under our FL model.
 2. [Base Case + FHE](#base-case-with-fhe) - This example will transfer information under FHE and do computation only in the aggregator node under our FL model.
 3. [Base Case + FHE + In-Network Computing](#base-case-with-fhe-with-in-network-computing) - This example attempts to optimize and improve the efficiency of the process by introducing in-network computing, which offloads some of the computation to the middle switches in our FL model.
+
+## Metrics
+
+The motivation for this project was based on wanting to understand
+
+## Running FL Simulation
 
 ## Installation
 
@@ -30,7 +57,9 @@ Make the setup file an executable and run
 chmod +x setup.sh
 ./setup.sh
 ```
-## Running FL Simulation
+
+## Flask Setup
+
 We combine the code for three roles in one repository.
 
 Use the `python main.py agg` to start the server.
@@ -99,18 +128,18 @@ For example, the log dictionary can be looked like this.
 }
 ```
 
-I made this repo public
+<!-- I made this repo public
 So, you can clone it anywhere you want.
 I also add you guys the contributor on github.
 When you want to make some changes, you develop somewhere, push it to github.
-Then pull it in the cloudlab machines.
+Then pull it in the cloudlab machines. -->
 
 There are 15 machines on the cloudlab.
 The 15 machines are connected physically using one switch.
 And the address beginning with `10.10` is the local address.
 The `node0` has address `10.10.1.1`.
-The `node1` has address `10.10.1.2`
-And so on.
+The `node1` has address `10.10.1.2`.
+So on and so forth.
 
 For convenience, let's use the node14, `10.10.1.15` as the aggregator.
 
@@ -124,11 +153,11 @@ For convenience, let's use the node14, `10.10.1.15` as the aggregator.
 
 Initially the PySEAL library was chosen for its ease of use being directly compatible with our setup written in Python.
 
->Note: Microsoft SEAL library does not come with working with Tensors directly.
+>Note: Microsoft SEAL library does not work with Tensors out of the box.
 
 Since PySEAL simply invokes a python wrapper to the [Microsoft SEAL](https://github.com/microsoft/SEAL) library, we will have to modify futher if we want to use it on Tensors.
 
-Below are the directions for running PySEAL and for more information visit the [PySEAL](https://github.com/Lab41/PySEAL/tree/master) GitHub repository.
+Below are the directions for running PySEAL and for more information, visit the [PySEAL](https://github.com/Lab41/PySEAL/tree/master) GitHub repository.
 
 #### Installation
 
@@ -150,7 +179,9 @@ TanSEAL is a library built on top of the Microsoft SEAL library.
 
 It introduces extra features such as `Dot Product` and `Tensors` that makes Machine Learning applications easy to invoke FHE.
 
-For more information visit the [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) GitHub repository
+The examples to use the seal is included in the `tenseal_ckks.py`.
+
+For more information, visit the [TenSEAL](https://github.com/OpenMined/TenSEAL/tree/main) GitHub repository.
 
 ## ML Model Running on Pytorch
 
@@ -162,7 +193,11 @@ When we complete our Federated Learning model, the client will call the *replace
 
 ## Base Case
 
-Some content for Section 1.
+For the Base Case, the `Client Nodes` will begin by training its ML models locally. Then after some training iterations, the client will send its parameters up to the `Aggregator Nodes`. In this senario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
+
+Once the `Aggregator Node` receives all the necessary files it will aggregate, average them, then send the new set of files back to all `Client Nodes`.
+
+Finally, once the `Client Nodes` receives the files back from the `Aggregator Node`, it will updates its values in the ML model and continue training through a warmstart.
 
 ## Base Case with FHE
 
@@ -183,4 +218,4 @@ When the Aggregator receives this ciphertext it will then call `../mnist_model/c
 - Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json`
 ## Base Case with FHE with In-Network Computing
 
-Some content for Section 3.
+In our last senario

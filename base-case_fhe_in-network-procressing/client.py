@@ -63,7 +63,7 @@ def train():
             print(f"Client send to: {switch_address}")
             file_path = "../mnist_model/weights/{address}_torch_weights{i}.pkl"
             files = {"file" : (file_path, f.read())}
-            requests.post(f"http://{switch_address:5000/}", files=files)
+            requests.post(f"http://{switch_address}:5000/", files=files)
 
     return ""
 

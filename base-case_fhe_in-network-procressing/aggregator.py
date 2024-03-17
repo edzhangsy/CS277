@@ -111,7 +111,7 @@ def aggregate():
         results_ser[0] = aggregation_results[0].serialize()
         results_ser[1] = aggregation_results[1].serialize()
         results_ser[2] = aggregation_results[2].serialize()
-        results_ser[3] = aggregatopm_results[3].serialize()
+        results_ser[3] = aggregation_results[3].serialize()
 
         # Save results
         for i in range(len(results_ser)):

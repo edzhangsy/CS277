@@ -19,7 +19,7 @@ def init(config):
 
     return
 
-@client_bp.route("/setup_context", method=["POST"])
+@client_bp.route("/setup_context", methods=["POST"])
 def setup_context():
     global context
 

@@ -20,7 +20,7 @@ def init(config):
 
     return
 
-@switch_bp.route("/setup_context", methon=["Post"])
+@switch_bp.route("/setup_context", methods=["Post"])
 def setup_context():
     global context
 

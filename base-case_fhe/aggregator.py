@@ -44,7 +44,7 @@ def aggregate():
 
     print(f"Aggregator file count: {received_file_count}")
     # Get the weights
-    if received_file_count == (num_clients * 4):
+    if received_file_count == (num_clients() * 4):
         received_file_count = 0
 
         address = clients_address()

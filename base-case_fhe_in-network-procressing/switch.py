@@ -82,8 +82,8 @@ def add():
         bias0_enc = tenseal.ckks_tensor_from(context, bias0)
         weight1_enc = tenseal.ckks_tensor_from(context, weight1)
         bias1_enc = tenseal.ckks_tensor_from(context, bias1)
-        weight2_enc = tenseal.ckks_tensor_from(fontext, weight2)
-        bias2_enc = tenseal.ckks_tensor_from(context. bias2)
+        weight2_enc = tenseal.ckks_tensor_from(context, weight2)
+        bias2_enc = tenseal.ckks_tensor_from(context, bias2)
         weight3_enc = tenseal.ckks_tensor_from(context, weight3)
         bias3_enc = tenseal.ckks_tensor_from(context, bias3)
 

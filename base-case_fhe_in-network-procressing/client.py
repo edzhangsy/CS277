@@ -154,7 +154,7 @@ def encrypt_and_serialize():
 
     return results
 
-def remove_serializtion_and_encryption():
+def remove_serialization_and_encryption():
     # Read serialized files
     weights = {
         0: None,

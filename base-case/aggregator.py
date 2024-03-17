@@ -48,7 +48,7 @@ def aggregate():
         received_file_count = 0
         address = clients_address()
 
-        weights = {}
+        weights = {0: None}
         k = 0
 
         for i in range(len(address)):

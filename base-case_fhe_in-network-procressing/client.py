@@ -4,7 +4,6 @@ import subprocess
 import tenseal
 import ast
 import json
-import ../mnist_model/mnist as mnist
 
 client_bp = Blueprint('client', __name__)
 
@@ -202,6 +201,12 @@ def remove_serialization_and_encryption():
     # Save as json files
     for i in range(4):
         with open(f"../mnist_model/weights/torch_weights{i}.json", "w") as f:
-            json.dump(results[i], f, cls=mnist.EncodeTensor)
+            json.dump(results[i], f, cls=EncodeTensor)
 
     return
+
+class EncodeTensor(JSONEncoder,Dataset):
+    def default(self, obj):
+        if isinstance(obj, torch.Tensor):
+            return obj.cpu().detach().numpy().tolist()
+        return super(EncodeTensor, self).default(obj)

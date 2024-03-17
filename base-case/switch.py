@@ -27,9 +27,8 @@ def add():
 
     # Send to next
     for i in range(4):
-        with open(file_path, "rb") as f:
-            print(f"Switch send to: {address}")
-            files = {"file" : file}
-            requests.post(f"http://{address}:5000/", files=files)
+        print(f"Switch send to: {address}")
+        files = {"file" : file}
+        requests.post(f"http://{address}:5000/", files=files)
 
     return ""

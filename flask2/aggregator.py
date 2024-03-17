@@ -117,7 +117,7 @@ def aggregate():
             iterations -= 1
             for i in range(len(clients)):
                 for j in range(4):
-                    file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
+                    file_path = "../mnist_model/weights/torch_weights"+str(j)+".json"
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}

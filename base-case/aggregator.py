@@ -53,15 +53,8 @@ def aggregate():
 
         for i in range(len(address)):
             for j in range(4):
-                with open(f"../mnist_model/weights/{address[j]}_torch_weights"+str(j)+".json", "r") as json_file:
-                    if j == 0:
-                        weights[k] = ast.literal_eval(json_file.read())
-                    elif j == 1:
-                        weights[k] = ast.literal_eval(json_file.read())
-                    elif j == 2:
-                        weights[k] = ast.literal_eval(json_file.read())
-                    elif j == 3:
-                        weights[k] = ast.literal_eval(json_file.read())
+                with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(j)+".json", "r") as json_file:
+                    weights[k] = ast.literal_eval(json_file.read())
                     k += 1
 
         aggregation_results = {
@@ -107,7 +100,7 @@ def aggregate():
             iterations -= 1
             for i in range(len(clients)):
                 for j in range(4):
-                    file_path = "../mnist_model/weights/torch_weights"+str(i)+".json"
+                    file_path = "../mnist_model/weights/torch_weights"+str(j)+".json"
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}

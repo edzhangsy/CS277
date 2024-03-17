@@ -44,42 +44,23 @@ def aggregate():
 
     print(f"Aggregator file count: {received_file_count}")
     # Get the weights
-    if received_file_count == 8:
+    if received_file_count == (num_clients * 4):
         received_file_count = 0
-        sender_address = sender_addr()
-        address1 = sender_address[0]
-        address2 = sender_address[1]
-        for i in range(4):
-            with open(f"../mnist_model/weights/{address1}_torch_weights"+str(i)+".pkl", "rb") as pkl:
-                if i == 0:
-                    weight0 = pkl.read()
-                elif i == 1:
-                    bias0 = pkl.read()
-                elif i == 2:
-                    weight1 = pkl.read()
-                elif i == 3:
-                    bias1 = pkl.read()
 
-        for i in range(4):
-            with open(f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".pkl", "rb") as pkl:
-                if i == 0:
-                    weight2 = pkl.read()
-                elif i == 1:
-                    bias2 = pkl.read()
-                elif i == 2:
-                    weight3 = pkl.read()
-                elif i == 3:
-                    bias3 = pkl.read()
+        address = clients_address()
+        weights = {}
+        k = 0
 
-        # Remove the serialization
-        weight0_enc = tenseal.ckks_tensor_from(context, weight0)
-        bias0_enc = tenseal.ckks_tensor_from(context, bias0)
-        weight1_enc = tenseal.ckks_tensor_from(context, weight1)
-        bias1_enc = tenseal.ckks_tensor_from(context, bias1)
-        weight2_enc = tenseal.ckks_tensor_from(context, weight2)
-        bias2_enc = tenseal.ckks_tensor_from(context, bias2)
-        weight3_enc = tenseal.ckks_tensor_from(context, weight3)
-        bias3_enc = tenseal.ckks_tensor_from(context, bias3)
+        for i in range(len(address)):
+            for j in range(4):
+                with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(j)+".pkl", "rb") as pkl:
+                    weights[k] = pkl.read()
+                    k += 1
+
+       weights_enc = {}
+
+       for i in range(len(weights)):
+           weights_enc[i] = tenseal.ckks_tensor_from(context, weights[i])
 
         aggregation_results = {
                 0: None,
@@ -90,14 +71,25 @@ def aggregate():
 
         num = 1 / num_clients()
 
-        # Average weights
-        aggregation_results[0] = weight0_enc + weight2_enc
+        aggregation_results[0] = weights_enc[0]
+        aggregation_results[1] = weights_enc[1]
+        aggregation_results[2] = weights_enc[2]
+        aggregation_results[3] = weights_enc[3]
+
+        for i in range(4, len(weights_enc), 4):
+            aggregation_results[0] = aggregation_results[0] + weights_enc[i]
         aggregation_results[0] = aggregation_results[0] * num
-        aggregation_results[1] = bias0_enc + bias2_enc
+
+        for i in range(5, len(weights_enc), 4):
+            aggregation_results[1] = aggregation_results[1] + weights_enc[i]
         aggregation_results[1] = aggregation_results[1] * num
-        aggregation_results[2] = weight1_enc + weight3_enc
+
+        for i in range(6, len(weights_enc), 4):
+            aggregation_results[2] = aggregation_results[2] + weights_enc[i]
         aggregation_results[2] = aggregation_results[2] * num
-        aggregation_results[3] = bias1_enc + bias3_enc
+
+        for i in range(7, len(weights_enc), 4):
+            aggregation_results[3] = aggregation_results[3] + weights_enc[i]
         aggregation_results[3] = aggregation_results[3] * num
 
         results_ser = {

@@ -48,7 +48,7 @@ def aggregate():
         received_file_count = 0
         address = clients_address()
 
-        weights = {0: None}
+        weights = {}
         k = 0
 
         for i in range(len(address)):
@@ -78,8 +78,10 @@ def aggregate():
         aggregation_results[2] = weights[2]
         aggregation_results[3] = weights[3]
 
-        #for i in range(4, len(weights), 4):
-        aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[0])]
+        print(type(aggregation_results[0]))
+        print(type(weight[0]))
+        for i in range(4, len(weights), 4):
+            aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[0])]
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
 
         for i in range(5, len(weights), 4):

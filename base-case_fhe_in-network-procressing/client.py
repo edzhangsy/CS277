@@ -13,13 +13,23 @@ switch_address = None
 received_file_count = 0
 
 def init(config):
-    global context
     global switch_address
 
-    context = tenseal.context_from(config["context"])
     switch_address = config["send"]
 
     return
+
+@client_bp.route("/setup_context", method=["POST"])
+def setup_context():
+    global context
+
+    file = request.files["file"]
+    file.save(f"{file.filename}")
+
+    with open("./private_key.pkl", "rb") as f:
+        context = tenseal.context_from(f.read())
+
+    return ""
 
 
 @client_bp.route("/train")

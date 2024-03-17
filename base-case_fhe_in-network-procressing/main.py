@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 # the current_bp store the pointer to the current blueprint
 current_type = None
+secret_key = None
 
 @app.route("/config", methods=['POST'])
 def config():
@@ -35,19 +36,51 @@ def log():
     return current_type.log
 
 def aggregator_init():
+    global secret_key
     print("aggregator start")
     app.register_blueprint(aggregator.aggregator_bp)
     with open('./config.json', 'r') as file:
         aggregator.config = json.load(file)
 
     aggregator.iterations = aggregator.config["aggregator"]["iteration"]
-    aggregator.context = tenseal.context_from(aggregator.config["aggregator"]["context"])
+    
+    context = tenseal.context(
+            tenseal.SCHEME_TYPE.ckks,
+            poly_modulus_degree=8192,
+            coeff_mod_bit_sizes=[60, 40, 40, 60]
+            )
+
+    context.generate_galois_keys()
+    context.global_scale = 2**40
+
+    aggregator.context = context
+
+    private_context = context.serialize()
+    
+    secret_key = context.secret_key()
+    context.make_context_public()
+    public_context = context.serialize()
+
+    with open("./private_context.pkl", "wb") as f:
+        f.write(private_context)
+
+    with open("./public_context.pkl", "wb") as f:
+        f.write(public_context)
  
  # call the others
     #print(aggregator.config)
     for key, value in aggregator.config['others'].items():
         print(key, value)
         try:
+            if value["type"] == "client":
+                with open("./private_context.pkl", "rb") as f:
+                    files = {"file": ("./private_key.pkl", f.read())}
+                    requests.post(f"http://{key}:5000/setup_context", files=files)
+            elif value["type"] == "switch":
+                with open("./public_context.pkl", "rb") as f:
+                    files = {"file": ("./public_key.pkl", f.read())}
+                    requests.post(f"http://{key}:5000/setup_context", files=files)
+
             response = requests.post(f"http://{key}:5000/config", json=value, timeout=0.5)
             print(f"http://{key}:5000/config")
             print(response)

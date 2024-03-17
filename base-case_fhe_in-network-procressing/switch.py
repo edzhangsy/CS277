@@ -14,13 +14,23 @@ received_file_count = 0
 
 
 def init(config):
-    global context
     global address
 
-    context = tenseal.context_from(config["context"])
     address = config["send"]
 
     return
+
+@switch_bp.route("/setup_context", methon=["Post"])
+def setup_context():
+    global context
+
+    file = request.files["file"]
+    file.save(f"{file.filename}")
+
+    with open("./public_context.pkl", "rb") as f:
+        context = tenseal.context_from(t.read())
+
+    return ""
 
 @switch_bp.route("/", methods=["POST"])
 def add():

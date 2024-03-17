@@ -28,7 +28,7 @@ def setup_context():
     file.save(f"{file.filename}")
 
     with open("./public_context.pkl", "rb") as f:
-        context = tenseal.context_from(t.read())
+        context = tenseal.context_from(f.read())
 
     return ""
 

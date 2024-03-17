@@ -4,6 +4,7 @@ import subprocess
 import tenseal
 import ast
 import json
+from json import JSONEncoder
 
 client_bp = Blueprint('client', __name__)
 

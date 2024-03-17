@@ -201,15 +201,15 @@ def remove_serialization_and_encryption():
     results[2] = weights_results[2].decrypt(context.secret_key())
     results[4] = weights_results[3].decrypt(context.secret_key())
 
+    class EncodeTensor(JSONEncoder,Dataset):
+    def default(self, obj):
+        if isinstance(obj, torch.Tensor):
+            return obj.cpu().detach().numpy().tolist()
+        return super(EncodeTensor, self).default(obj)
+
     # Save as json files
     for i in range(4):
         with open(f"../mnist_model/weights/torch_weights{i}.json", "w") as f:
             json.dump(results[i], f, cls=EncodeTensor)
 
     return
-
-class EncodeTensor(JSONEncoder,Dataset):
-    def default(self, obj):
-        if isinstance(obj, torch.Tensor):
-            return obj.cpu().detach().numpy().tolist()
-        return super(EncodeTensor, self).default(obj)

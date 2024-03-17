@@ -196,7 +196,7 @@ def remove_serialization_and_encryption():
     results[0] = weights_results[0].decrypt(context.secret_key()).tolist()
     results[1] = weights_results[1].decrypt(context.secret_key()).tolist()
     results[2] = weights_results[2].decrypt(context.secret_key()).tolist()
-    results[4] = weights_results[3].decrypt(context.secret_key()).tolist()
+    results[3] = weights_results[3].decrypt(context.secret_key()).tolist()
 
     # Save as json files
     for i in range(4):

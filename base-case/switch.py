@@ -24,11 +24,13 @@ def add():
     
     # Get files
     file = request.files["file"]
+    file.save(f"file.filename")
 
     # Send to next
     for i in range(4):
         print(f"Switch send: {file.filename} to: {address}")
-        files = {"file" : file}
-        requests.post(f"http://{address}:5000/", files=files)
+        with open(file.filename, "rb") as f:
+            files = {"file" : {file.filename, f.read()}}
+            requests.post(f"http://{address}:5000/", files=files)
 
     return ""

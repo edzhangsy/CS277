@@ -193,14 +193,14 @@ def remove_serialization_and_encryption():
         3: None
     }
 
-    results[0] = weights_results[0].decrypt(context.secret_key())
-    results[1] = weights_results[1].decrypt(context.secret_key())
-    results[2] = weights_results[2].decrypt(context.secret_key())
-    results[4] = weights_results[3].decrypt(context.secret_key())
+    results[0] = weights_results[0].decrypt(context.secret_key()).tolist()
+    results[1] = weights_results[1].decrypt(context.secret_key()).tolist()
+    results[2] = weights_results[2].decrypt(context.secret_key()).tolist()
+    results[4] = weights_results[3].decrypt(context.secret_key()).tolist()
 
     # Save as json files
     for i in range(4):
         with open(f"../mnist_model/weights/torch_weights{i}.json", "w") as f:
-            json.dump(results[i].tolist(), f)
+            json.dump(results[i], f)
 
     return

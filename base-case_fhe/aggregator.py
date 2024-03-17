@@ -57,10 +57,10 @@ def aggregate():
                     weights[k] = pkl.read()
                     k += 1
 
-       weights_enc = {}
+        weights_enc = {}
 
-       for i in range(len(weights)):
-           weights_enc[i] = tenseal.ckks_tensor_from(context, weights[i])
+        for i in range(len(weights)):
+            weights_enc[i] = tenseal.ckks_tensor_from(context, weights[i])
 
         aggregation_results = {
                 0: None,

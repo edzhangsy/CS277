@@ -50,18 +50,18 @@ def aggregate():
         weights = {}
         k = 0
 
-       for i in range(len(address)):
-           for j in range(4):
-               with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(i)+".json", "r") as json_file:
-                   if j == 0:
+        for i in range(len(address)):
+            for j in range(4):
+                with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(i)+".json", "r") as json_file:
+                    if j == 0:
+                        weights[k] = ast.literal_eval(json_file.read())
+                    elif j == 1:
+                        weights[k] = ast.literal_eval(json_file.read())
+                    elif j == 2:
+                        weights[k] = ast.literal_eval(json_file.read())
+                    elif j == 3:
                        weights[k] = ast.literal_eval(json_file.read())
-                   elif j == 1:
-                       weights[k] = ast.literal_eval(json_file.read())
-                   elif j == 2:
-                       weights[k] = ast.literal_eval(json_file.read())
-                   elif j == 3:
-                       weights[k] = ast.literal_eval(json_file.read())
-                   k += 1
+                    k += 1
 
         aggregation_results = {
                 0: None,

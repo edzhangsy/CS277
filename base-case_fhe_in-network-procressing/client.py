@@ -23,6 +23,7 @@ def init(config):
 def setup_context():
     global context
 
+    print("Client Setup Context")
     file = request.files["file"]
     file.save(f"{file.filename}")
 

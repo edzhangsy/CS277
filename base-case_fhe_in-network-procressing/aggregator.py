@@ -9,7 +9,7 @@ aggregator_bp = Blueprint('aggregator', __name__)
 
 config = {}
 log = {}
-context
+context = None
 iterations = 0
 received_file_count = 0
 pool = Pool(16)

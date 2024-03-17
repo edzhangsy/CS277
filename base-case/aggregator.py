@@ -53,7 +53,7 @@ def aggregate():
 
         for i in range(len(address)):
             for j in range(4):
-                with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(i)+".json", "r") as json_file:
+                with open(f"../mnist_model/weights/{address[j]}_torch_weights"+str(j)+".json", "r") as json_file:
                     if j == 0:
                         weights[k] = ast.literal_eval(json_file.read())
                     elif j == 1:
@@ -73,14 +73,13 @@ def aggregate():
 
         num = num_clients()
 
-        weight0 = weights[0]
-        bias0 = weights[1]
-        weight1 = weights[2]
-        bias1 = weights[3]
+        aggregation_results[0] = weights[0]
+        aggregation_results[1] = weights[1]
+        aggregation_results[2] = weights[2]
+        aggregation_results[3] = weights[3]
 
         for i in range(4, len(weights), 4):
-            weight0 = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight0, weights[i])]
-        aggregation_results[0] = weight0
+            aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[i])]
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
 
         for i in range(5, len(weights), 4):

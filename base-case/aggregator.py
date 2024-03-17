@@ -73,13 +73,14 @@ def aggregate():
 
         num = num_clients()
 
-        aggregation_results[0] = weights[0]
-        aggregation_results[1] = weights[1]
-        aggregation_results[2] = weights[2]
-        aggregation_results[3] = weights[3]
+        weight0 = weights[0]
+        bias0 = weights[1]
+        weight1 = weights[2]
+        bias1 = weights[3]
 
         for i in range(4, len(weights), 4):
-            aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[0])]
+            weight0 = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(weight0, weights[i])]
+        aggregation_results[0] = weight0
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
 
         for i in range(5, len(weights), 4):

@@ -74,12 +74,12 @@ def continue_traning():
 
         address = config["ip"]
         for i in range(4):
-                # Where does replace_weights_mnist save files?
-                file_path = f"../mnist_model/weights/torch_weights{i}.json"
-                with open(file_path, "rb") as f:
-                    print(f"Client send: {file_path} to: {switch_address}")
-                    file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json"
-                    files = {"file" : (file_path, f.read())}
-                    requests.post(f"http://{switch_address}:5000/", files=files)
+            # Where does replace_weights_mnist save files?
+            file_path = f"../mnist_model/weights/torch_weights{i}.json"
+            with open(file_path, "rb") as f:
+                print(f"Client send: {file_path} to: {switch_address}")
+                file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json"
+                files = {"file" : (file_path, f.read())}
+                requests.post(f"http://{switch_address}:5000/", files=files)
 
     return ""

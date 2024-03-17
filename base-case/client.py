@@ -40,6 +40,7 @@ def train():
         file_path = f"../mnist_model/weights/torch_weights{i}.json"
         with open(file_path, "rb") as f:
             file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json"
+            print(f"Sending: {file_path}")
             files = {"file" : (file_path, f.read())}
             response = requests.post(f"http://{switch_address}:5000/", files=files)
 
@@ -76,7 +77,7 @@ def continue_traning():
                 # Where does replace_weights_mnist save files?
                 file_path = f"../mnist_model/weights/torch_weights{i}.json"
                 with open(file_path, "rb") as f:
-                    print(f"Client send to: {switch_address}")
+                    print(f"Client send: {file_path} to: {switch_address}")
                     file_path = f"../mnist_model/weights/{address}_torch_weights{i}.json"
                     files = {"file" : (file_path, f.read())}
                     requests.post(f"http://{switch_address}:5000/", files=files)

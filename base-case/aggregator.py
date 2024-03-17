@@ -37,6 +37,7 @@ def aggregate():
     print("Aggregator Continue Training")
     # Get files and save
     file = request.files["file"]
+    print(f"Saving: file.filename")
     file.save(f"{file.filename}")
 
     received_file_count += 1
@@ -60,7 +61,7 @@ def aggregate():
                     elif j == 2:
                         weights[k] = ast.literal_eval(json_file.read())
                     elif j == 3:
-                       weights[k] = ast.literal_eval(json_file.read())
+                        weights[k] = ast.literal_eval(json_file.read())
                     k += 1
 
         aggregation_results = {

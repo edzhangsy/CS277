@@ -96,7 +96,7 @@ def add():
 
         # Add weights
         add_results[0] = weight0_enc + weight2_enc
-        add_results[1] = bias0_enc + bias1_enc
+        add_results[1] = bias0_enc + bias2_enc
         add_results[2] = weight1_enc + weight3_enc
         add_results[3] = bias1_enc + bias3_enc
 

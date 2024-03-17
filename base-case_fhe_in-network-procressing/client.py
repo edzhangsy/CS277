@@ -202,10 +202,10 @@ def remove_serialization_and_encryption():
     results[4] = weights_results[3].decrypt(context.secret_key())
 
     class EncodeTensor(JSONEncoder,Dataset):
-    def default(self, obj):
-        if isinstance(obj, torch.Tensor):
-            return obj.cpu().detach().numpy().tolist()
-        return super(EncodeTensor, self).default(obj)
+        def default(self, obj):
+            if isinstance(obj, torch.Tensor):
+                return obj.cpu().detach().numpy().tolist()
+            return super(EncodeTensor, self).default(obj)
 
     # Save as json files
     for i in range(4):

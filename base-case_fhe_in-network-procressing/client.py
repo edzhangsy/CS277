@@ -6,6 +6,7 @@ import ast
 import json
 from json import JSONEncoder
 from torch.utils.data import Dataset
+import torch
 
 client_bp = Blueprint('client', __name__)
 

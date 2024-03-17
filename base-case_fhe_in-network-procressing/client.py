@@ -5,6 +5,7 @@ import tenseal
 import ast
 import json
 from json import JSONEncoder
+from torch.utils.data import Dataset
 
 client_bp = Blueprint('client', __name__)
 

@@ -30,7 +30,7 @@ def add():
     for i in range(4):
         print(f"Switch send: {file.filename} to: {address}")
         with open(file.filename, "rb") as f:
-            files = {"file" : {file.filename, f.read()}}
+            files = {"file" : (file.filename, f.read())}
             requests.post(f"http://{address}:5000/", files=files)
 
     return ""

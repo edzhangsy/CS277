@@ -55,7 +55,7 @@ def aggregator_init():
 
     aggregator.context = context
 
-    private_context = context.serialize(save_secret_key=true)
+    private_context = context.serialize(save_secret_key=True)
     
     secret_key = context.secret_key()
     context.make_context_public()

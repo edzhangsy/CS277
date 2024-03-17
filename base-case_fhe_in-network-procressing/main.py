@@ -74,11 +74,11 @@ def aggregator_init():
         try:
             if value["type"] == "client":
                 with open("./private_context.pkl", "rb") as f:
-                    files = {"file": ("./private_key.pkl", f.read())}
+                    files = {"file": ("./private_context.pkl", f.read())}
                     requests.post(f"http://{key}:5000/setup_context", files=files)
             elif value["type"] == "switch":
                 with open("./public_context.pkl", "rb") as f:
-                    files = {"file": ("./public_key.pkl", f.read())}
+                    files = {"file": ("./public_context.pkl", f.read())}
                     requests.post(f"http://{key}:5000/setup_context", files=files)
 
             response = requests.post(f"http://{key}:5000/config", json=value, timeout=0.5)

@@ -98,7 +98,7 @@ def continue_traning():
                 print(f"Error executing replace_weights_mnist.py: {e}")
 
         # Encrypt and serialize
-        results = encryption_and_serialization()
+        results = encrypt_and_serialize()
 
         for i in range(4):
             file_path = f"../mnist_model/weights/torch_weights{i}.pkl"

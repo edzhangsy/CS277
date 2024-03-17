@@ -79,8 +79,7 @@ def aggregate():
         aggregation_results[3] = weights[3]
 
         for i in range(4, len(weights), 4):
-            aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] 
-                                      for sublist1, sublist2 in zip(aggregation_results[0], weights[i])]
+            aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[i])]
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
 
         for i in range(5, len(weights), 4):
@@ -88,8 +87,7 @@ def aggregate():
         aggregation_results[1] = [element / num for element in aggregation_results[1]]
 
         for i in range(6, len(weights), 4):
-            aggregation_results[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)]
-                                      for sublist1, sublist2 in zip(aggregation_results[2], weights[i])]
+            aggregation_results[2] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[2], weights[i])]
         aggregation_results[2] = [[element / num for element in sublist] for sublist in aggregation_results[2]]
 
         for i in range(7, len(weights), 4):

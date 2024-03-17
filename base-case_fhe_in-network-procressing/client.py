@@ -30,6 +30,8 @@ def setup_context():
     with open("./private_context.pkl", "rb") as f:
         context = tenseal.context_from(f.read())
 
+    print(context.is_public())
+
     return ""
 
 
@@ -155,6 +157,7 @@ def encrypt_and_serialize():
     return results
 
 def remove_serialization_and_encryption():
+    global context
     # Read serialized files
     weights = {
         0: None,
@@ -189,10 +192,10 @@ def remove_serialization_and_encryption():
         3: None
     }
 
-    results[0] = weights_results[0].decrypt()
-    results[1] = weights_results[1].decrypt()
-    results[2] = weights_results[2].decrypt()
-    results[4] = weights_results[3].decrypt()
+    results[0] = weights_results[0].decrypt(context.secret_key())
+    results[1] = weights_results[1].decrypt(context.secret_key())
+    results[2] = weights_results[2].decrypt(context.secret_key())
+    results[4] = weights_results[3].decrypt(context.secret_key())
 
     # Save as json files
     for i in range(4):

@@ -1,0 +1,1 @@
+This is the Base Case with FHE and In-Network Processing example.  The clients train the models, encrpyt them, and send them to the switches.  The switches add the two models together and sent it to the next point.  The aggregator finishes the computation.

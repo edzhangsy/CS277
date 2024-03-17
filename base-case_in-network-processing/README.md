@@ -1,0 +1,1 @@
+This is the Base Case with In-Network processing.  The clients train the models and send them to the switches.  The switches add the two models they get together before sending the model to the next point.  The aggregator finisehes the computation.

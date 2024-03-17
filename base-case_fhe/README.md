@@ -1,0 +1,1 @@
+This is the Base Case + FHE example.  The clients train the models, encrypt them, and send them to the switches.  The switches send the models to the next point without any computation.  The aggregator decrypts and does all computations on the model.

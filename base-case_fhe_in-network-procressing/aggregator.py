@@ -91,14 +91,14 @@ def aggregate():
         num = 1 / num_clients()
 
         # Average weights
-        aggregation_result[0] = weight0_enc + weight2_enc
-        aggregation_result[0] = aggregation_result[0] * num
-        aggregation_result[1] = bias0_enc + bias2_enc
-        aggregation_result[1] = aggregation_result[1] * num
-        aggregation_result[2] = weight1_enc + weight3_enc
-        aggregation_result[2] = aggregation_result[2] * num
-        aggregation_result[3] = bias1_enc + bias3_enc
-        aggregation_result[3] = aggregation_result[3] * num
+        aggregation_results[0] = weight0_enc + weight2_enc
+        aggregation_results[0] = aggregation_results[0] * num
+        aggregation_results[1] = bias0_enc + bias2_enc
+        aggregation_results[1] = aggregation_results[1] * num
+        aggregation_results[2] = weight1_enc + weight3_enc
+        aggregation_results[2] = aggregation_results[2] * num
+        aggregation_results[3] = bias1_enc + bias3_enc
+        aggregation_results[3] = aggregation_results[3] * num
 
         results_ser = {
             0: None,

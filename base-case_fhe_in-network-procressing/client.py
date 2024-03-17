@@ -123,7 +123,7 @@ def encrypt_and_serialize():
 
     for i in range(4):
         file_path = f"../mnist_model/weights/torch_weights{i}.json"
-        with open(file_path, "rb") as f:
+        with open(file_path, "r") as f:
             if i == 0:
                 weight0 = ast.literal_eval(f.read())
             elif i == 1:

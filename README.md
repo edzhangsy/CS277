@@ -98,9 +98,17 @@ chmod +x setup.sh
 
 We combine the code for three roles in one repository.
 
-Use the `python main.py agg` to start the server.
+To run the cuurent setup, begin by starting the switch and client nodes
+```sh
+python main.oy
+```
 
-For other servers, just use the `python main.py` to start
+Run the aggregator node
+```sh
+python main.py agg
+```
+
+After open up the localhost webpage and change the url route to `/train`
 
 > Note: Remember to start the server in background so it doesn't get killed when you disconnet your ssh.
 
@@ -110,7 +118,7 @@ The config for other clients are stored under the `others` dictionary.
 The key is the IP address, The value is the config.
 Send the config to the corresponding client.
 After receiving the config, which is a json from the aggregator, the other servers will register the blueprint dynamically based on the `type` in the config.
-Check the `config.json` file and add configs if needed.
+Check the `config.json` file and modify configs if needed.
 
 The configs should be self-explainatory.
 
@@ -123,7 +131,7 @@ When you want to start another experiment, just edit the `config.json` and resta
 
 ### Development
 
-Because each kind of server have different kinds of interfaces, we separate them into different blueprints.
+Because different types of servers have their corresponding unique interfaces, we separate them into different blueprints.
 See the flask documentation for what is [blueprint](https://flask.palletsprojects.com/en/3.0.x/blueprints/).
 If you are developing the `client`, just edit the `client.py` and add interfaces.
 The config that is received from the server is stored in the `config` variable in `client.py` or `switch.py`
@@ -136,7 +144,7 @@ Look for the flask documentation for how to check the status code.
 Also, you should write the log into the local `log` directory.
 Just use some dictionary to store the logs.
 
-For example, the log dictionary can be looked like this.
+For example, the log dictionary can look like this.
 
 ```json
 {
@@ -248,7 +256,15 @@ Finally, once the `Client Nodes` receives the files back from the `Aggregator No
 
 ### Base Case with FHE
 
-Aggregator begins the process with calling `../mnist_model/ckks_init.py` file
+For the Base Case with FHE, the `Client Nodes` will begin by training its ML models locally. 
+Then after completing its training, the client will encrypt the parameters and send it as a ciphertext up to the `Aggregator Nodes`. 
+In this scenario, our `Switch Nodes` will act as dumb switches that simply forward the files as they come up to the `Aggregator Nodes`.
+
+Once the `Aggregator Node` receives all the necessary files it will aggregate, average them, then decrypt the ciphertext back to plaintext before sending the new set of files back to all `Client Nodes`.
+
+Finally, once the `Client Nodes` receives the files back from the `Aggregator Node`, it will updates its values in the ML model and continue training through a warmstart.
+
+<!-- Aggregator begins the process with calling `../mnist_model/ckks_init.py` file
 - This file generates a context used in our FHE
 - It holds the context with its secret key under the `private_context` variable
 - It also creates a public version that removes the secret key under the `server_context` variable
@@ -262,7 +278,14 @@ When Client receives the public context, it is ready to train the model and encr
 When the Aggregator receives this ciphertext it will then call `../mnist_model/ckks_aggregate_fl.py` file
 - In the case that the secret key context is saved, you can just use `lines 137-153` which thats the weight parameters in bytes to turn it back into tensors.
 - THen Calculations are done on it and it will decrypt the ciphertext to plaintext and can be ready to forward the files back to the client for retraining
-- Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json`
+- Files are saved in `../mnist_model/aggregate/ckks_weights'{i}}'.json` -->
+
 ### Base Case with FHE with In-Network Processing
 
-In our last scenario
+For the Base Case with FHE with In-Network Processing, the `Client Nodes` will begin by training its ML models locally. 
+Then after completing its training, the client will encrypt the parameters and send it as a ciphertext up to the `Aggregator Nodes`. 
+In this scenario, our `Switch Nodes` will help decrease the load for the aggregator and perform local aggregation combining two files into one before forwarding the files up to the `Aggregator Nodes`.
+
+Once the `Aggregator Node` receives all the necessary files it will aggregate the remaining files, average them, then decrypt the ciphertext back to plaintext before sending the new set of files back to all `Client Nodes`.
+
+Finally, once the `Client Nodes` receives the files back from the `Aggregator Node`, it will updates its values in the ML model and continue training through a warmstart.

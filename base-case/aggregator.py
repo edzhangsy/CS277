@@ -3,13 +3,19 @@ from multiprocessing import Pool
 import ast
 import requests
 import json
+import logging
+import os
 
 aggregator_bp = Blueprint('aggregator', __name__)
 
 config = {}
 log = {}
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='example.log', filemode='w', format='%(asctime)s %(message)s', level=logging.DEBUG)
 #context = None
 iterations = 0
+round = 1
+totalData = 0
 received_file_count = 0
 pool = Pool(16)
 
@@ -19,6 +25,8 @@ def train():
     global pool
 
     print("Aggregator Train")
+    logger.info("Training has begun")
+    logger.info("Round 1 has begun")
     for key, value in config["others"].items():
         t = value["type"]
         if value["type"] == "client":
@@ -33,6 +41,8 @@ def aggregate():
     global iterations
     global config
     global pool
+    global round
+    global totalData
 
     print("Aggregator Continue Training")
     # Get files and save
@@ -41,10 +51,18 @@ def aggregate():
     file.save(f"{file.filename}")
 
     received_file_count += 1
+    
+    file_name = file.filename
+    file_size = (os.stat(file_name)).st_size
+    totalData += file_size
+    logger.info('file of size %d received', file_size)
 
     print(f"Aggregator file count: {received_file_count}")
     # Get the weights
     if received_file_count == (num_clients() * 4):
+        logger.info('Round %d completed!', round)
+        round += 1
+        logger.info('Round %d has begun', round)
         received_file_count = 0
         address = clients_address()
 
@@ -104,8 +122,17 @@ def aggregate():
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
+
+                        file_name = files.filename
+                        file_size = (os.stat(file_name)).st_size
+                        totalData += file_size
+                        logger.info('file of size %d transmitted', file_size)
+
                         pool.apply_async(requests.post, (f"http://{clients[i]}:5000/continue_training",), kwds={"files": files})
                         #requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
+        else:
+            logger.info('Total data sent in bytes is %d', totalData)
+            logger.info("Training has ended")
 
     print("Aggregator return")
     return ""

@@ -11,7 +11,7 @@ aggregator_bp = Blueprint('aggregator', __name__)
 config = {}
 log = {}
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
 #context = None
 iterations = 0
 round = 1
@@ -55,7 +55,7 @@ def aggregate():
     file_name = file.filename
     file_size = (os.stat(file_name)).st_size
     totalData += file_size
-    logger.info('file of size %d received', file_size)
+    logger.info('Received file of size %d', file_size)
 
     print(f"Aggregator file count: {received_file_count}")
     # Get the weights
@@ -123,10 +123,9 @@ def aggregate():
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
 
-                        file_name = files.filename
-                        file_size = (os.stat(file_name)).st_size
+                        file_size = (os.stat(file_path)).st_size
                         totalData += file_size
-                        logger.info('file of size %d transmitted', file_size)
+                        logger.info('Transmitted file of size %d', file_size)
 
                         pool.apply_async(requests.post, (f"http://{clients[i]}:5000/continue_training",), kwds={"files": files})
                         #requests.post(f"http://{clients[i]}:5000/continue_training", files=files)

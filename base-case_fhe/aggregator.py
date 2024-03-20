@@ -38,7 +38,9 @@ def aggregate():
     print("Aggregator Continue Training")
     # Get files and save
     file = request.files["file"]
+    print("Received files")
     file.save(f"{file.filename}")
+    print("Saved files")
 
     received_file_count += 1
 

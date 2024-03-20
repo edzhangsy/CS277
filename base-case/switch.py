@@ -24,7 +24,7 @@ def add():
     
     # Get files
     file = request.files["file"]
-    file.save(f"file.filename")
+    file.save(f"{file.filename}")
 
     # Send to next
     print(f"Switch send: {file.filename} to: {address}")

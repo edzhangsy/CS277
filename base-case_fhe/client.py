@@ -88,7 +88,7 @@ def continue_traning():
         received_file_count = 0
 
         # Deserialize and remove encryption
-        remove_serialization_and_encryption()
+        #remove_serialization_and_encryption()
 
         command = ["python", "../mnist_model/replace_weights_mnist.py"]
 

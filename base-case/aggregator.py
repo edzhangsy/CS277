@@ -11,7 +11,7 @@ aggregator_bp = Blueprint('aggregator', __name__)
 config = {}
 log = {}
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='example.log', filemode='w', format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.DEBUG)
 #context = None
 iterations = 0
 round = 1
@@ -51,7 +51,7 @@ def aggregate():
     file.save(f"{file.filename}")
 
     received_file_count += 1
-    
+
     file_name = file.filename
     file_size = (os.stat(file_name)).st_size
     totalData += file_size

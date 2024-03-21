@@ -53,7 +53,6 @@ def aggregator_init():
     context.generate_galois_keys()
     context.global_scale = 2**40
 
-    aggregator.context = context
 
     private_context = context.serialize(save_secret_key=True)
     
@@ -66,6 +65,10 @@ def aggregator_init():
 
     with open("./public_context.pkl", "wb") as f:
         f.write(public_context)
+
+    with open("./private_context.pkl", "rb") as f:
+        aggregator.context=tenseal.contextfrom(f.read())
+
  
  # call the others
     #print(aggregator.config)
@@ -74,7 +77,7 @@ def aggregator_init():
         try:
             if value["type"] == "client":
                 with open("./private_context.pkl", "rb") as f:
-                    files = {"file": ("./private_context.pkl", f.read())}
+                    files = {"file": ("./public_context.pkl", f.read())}
                     requests.post(f"http://{key}:5000/setup_context_t", files=files)
             elif value["type"] == "switch":
                 with open("./public_context.pkl", "rb") as f:

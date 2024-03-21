@@ -8,14 +8,20 @@ config = {}
 
 #context = None
 switch_address = None
+numClients = None
+clientIndex = None
 received_file_count = 0
 
 def init(config):
     #global context
     global switch_address
+    global numClients
+    global clientIndex
 
     #context = config["context"]
     switch_address = config["send"]
+    numClients = config["client_number"]
+    clientIndex = config["index"]
 
     return
 
@@ -24,9 +30,11 @@ def init(config):
 def train():
     global switch_address
     global config
+    global numClients
+    global clientIndex
 
     print("Client Train")
-    command = ["python", "../mnist_model/mnist.py"]
+    command = ["python", "../mnist_model/mnist.py", str(numClients), str(clientIndex)]
 
     try:
         subprocess.run(command, check=True)
@@ -51,6 +59,8 @@ def train():
 def continue_traning():
     global received_file_count
     global config
+    global numClients
+    global clientIndex
 
     print("Client Continue Training")
     file = request.files["file"]
@@ -63,7 +73,7 @@ def continue_traning():
         received_file_count = 0
         # Deserialize and remove encryption
 
-        command = ["python", "../mnist_model/replace_weights_mnist.py"]
+        command = ["python", "../mnist_model/replace_weights_mnist.py", str(numClients), str(clientIndex)]
 
         try:
                 subprocess.run(command, check=True)

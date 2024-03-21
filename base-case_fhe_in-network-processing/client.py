@@ -11,12 +11,18 @@ config = {}
 
 context = None
 switch_address = None
+numClients = None
+clientIndex = None
 received_file_count = 0
 
 def init(config):
     global switch_address
+    global numClients
+    global clientIndex
 
     switch_address = config["send"]
+    numClients = config["client_number"]
+    clientIndex = config["index"]
 
     return
 
@@ -28,7 +34,7 @@ def setup_context():
     file = request.files["file"]
     file.save(f"{file.filename}")
 
-    with open("./private_context.pkl", "rb") as f:
+    with open("./public_context.pkl", "rb") as f:
         context = tenseal.context_from(f.read())
 
     print(context.is_public())
@@ -40,9 +46,11 @@ def setup_context():
 def train():
     global switch_address
     global config
+    global numClients
+    global clientIndex
 
     print("Client Train")
-    command = ["python", "../mnist_model/mnist.py"]
+    command = ["python", "../mnist_model/mnist.py", str(numClients), str(clientIndex)]
 
     # Run the training
     try:
@@ -75,6 +83,8 @@ def train():
 def continue_traning():
     global received_file_count
     global config
+    global numClients
+    global clientIndex
 
     print("Client Continue Training")
     file = request.files["file"]
@@ -88,9 +98,9 @@ def continue_traning():
         received_file_count = 0
 
         # Deserialize and remove encryption
-        remove_serialization_and_encryption()
+        #remove_serialization_and_encryption()
 
-        command = ["python", "../mnist_model/replace_weights_mnist.py"]
+        command = ["python", "../mnist_model/replace_weights_mnist.py", str(numClients), str(clientIndex)]
 
         try:
                 subprocess.run(command, check=True)

@@ -34,7 +34,7 @@ def train():
     global clientIndex
 
     print("Client Train")
-    command = ["python", "../mnist_model/mnist.py", numClients, clientIndex]
+    command = ["python", "../mnist_model/mnist.py", str(numClients), str(clientIndex)]
 
     try:
         subprocess.run(command, check=True)
@@ -59,6 +59,8 @@ def train():
 def continue_traning():
     global received_file_count
     global config
+    global numClients
+    global clientIndex
 
     print("Client Continue Training")
     file = request.files["file"]
@@ -71,7 +73,7 @@ def continue_traning():
         received_file_count = 0
         # Deserialize and remove encryption
 
-        command = ["python", "../mnist_model/replace_weights_mnist.py", "numClients", "clientIndex"]
+        command = ["python", "../mnist_model/replace_weights_mnist.py", str(numClients), str(clientIndex)]
 
         try:
                 subprocess.run(command, check=True)

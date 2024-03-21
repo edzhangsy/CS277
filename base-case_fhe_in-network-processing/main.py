@@ -67,7 +67,7 @@ def aggregator_init():
         f.write(public_context)
 
     with open("./private_context.pkl", "rb") as f:
-        aggregator.context=tenseal.contextfrom(f.read())
+        aggregator.context=tenseal.context_from(f.read())
 
  
  # call the others

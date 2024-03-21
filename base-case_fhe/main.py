@@ -54,12 +54,13 @@ def aggregator_init():
     context.global_scale = 2**40
 
     aggregator.context = context
+    copy = context
 
     private_context = context.serialize(save_secret_key=True)
     
     #secret_key = context.secret_key()
-    context.make_context_public()
-    public_context = context.serialize()
+    copy.make_context_public()
+    public_context = copy.serialize()
 
     with open("./private_context.pkl", "wb") as f:
         f.write(private_context)

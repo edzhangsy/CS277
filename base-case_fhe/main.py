@@ -53,7 +53,6 @@ def aggregator_init():
     context.generate_galois_keys()
     context.global_scale = 2**40
 
-    aggregator.context = context
     copy = context
 
     private_context = context.serialize(save_secret_key=True)
@@ -69,8 +68,7 @@ def aggregator_init():
         f.write(public_context)
 
     with open("./private_context.pkl", "rb") as f:
-        files = {"file": ("./private_context.pkl", f.read())}
-        requests.post("http://10.10.1.1:5000/setup_context_agg", files = files)
+        aggregator.context = tenseal.context_from(f.read())
  
  # call the others
     #print(aggregator.config)

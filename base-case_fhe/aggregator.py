@@ -4,13 +4,19 @@ import ast
 import requests
 import json
 import tenseal
+import logging
+import os
 
 aggregator_bp = Blueprint('aggregator', __name__)
 
 config = {}
 log = {}
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
 context = None
 iterations = 0
+round = 1
+totalData = 0
 received_file_count = 0
 pool = Pool(16)
 
@@ -20,6 +26,8 @@ def train():
     global pool
 
     print("Aggregator Train")
+    logger.info("Training has begun")
+    logger.info("Round 1 has begun")
     for key, value in config["others"].items():
         t = value["type"]
         if value["type"] == "client":
@@ -34,6 +42,8 @@ def aggregate():
     global iterations
     global config
     global pool
+    global round
+    global totalData
 
     print("Aggregator Continue Training")
     # Get files and save
@@ -44,15 +54,23 @@ def aggregate():
 
     received_file_count += 1
 
+    file_name = file.filename
+    file_size = (os.stat(file_name)).st_size
+    totalData += file_size
+    logger.info('Received file of size %d', file_size)
+
     print(f"Aggregator file count: {received_file_count}")
     # Get the weights
     if received_file_count == (num_clients() * 4):
+        logger.info('Round %d completed!', round)
+        round += 1
+        logger.info('Round %d has begun', round)
         received_file_count = 0
 
         address = clients_address()
         weights = {}
         k = 0
-
+        logger.info('FHE overhead start aggregator')
         for i in range(len(address)):
             for j in range(4):
                 with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(j)+".pkl", "rb") as pkl:
@@ -64,6 +82,7 @@ def aggregate():
         # Remove serialization
         for i in range(len(weights)):
             weights_enc[i] = tenseal.ckks_tensor_from(context, weights[i])
+
 
         aggregation_results = {
                 0: None,
@@ -79,7 +98,7 @@ def aggregate():
         aggregation_results[1] = weights_enc[1]
         aggregation_results[2] = weights_enc[2]
         aggregation_results[3] = weights_enc[3]
-
+        logger.info('FHE overhead start aggregator compute')
         for i in range(4, len(weights_enc), 4):
             aggregation_results[0] = aggregation_results[0] + weights_enc[i]
         aggregation_results[0] = aggregation_results[0] * num
@@ -95,7 +114,7 @@ def aggregate():
         for i in range(7, len(weights_enc), 4):
             aggregation_results[3] = aggregation_results[3] + weights_enc[i]
         aggregation_results[3] = aggregation_results[3] * num
-
+        logger.info('FHE overhead end aggregator compute')
         results = {
             0: None,
             1: None,
@@ -125,6 +144,8 @@ def aggregate():
             with open(f"../mnist_model/weights/torch_weights{i}.json", "w") as f:
                 json.dump(results[i], f)
 
+        logger.info('FHE overhead end aggregator')
+
         clients = clients_address()
 
         print(f"iterations: {iterations}")
@@ -137,8 +158,16 @@ def aggregate():
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}
+
+                        file_size = (os.stat(file_path)).st_size
+                        totalData += file_size
+                        logger.info('Transmitted file of size %d', file_size)
+
                         pool.apply_async(requests.post, (f"http://{clients[i]}:5000/continue_training",), kwds={"files": files})
                         #requests.post(f"http://{clients[i]}:5000/continue_training", files=files)
+        else:
+            logger.info('Total data sent in bytes is %d', totalData)
+            logger.info("Training has ended")
 
     print("Aggregator return")
     return ""

@@ -68,7 +68,7 @@ def aggregate():
 
         weights = {}
         k = 0
-
+        logger.info('aggregator start')
         for i in range(len(address)):
             for j in range(4):
                 with open(f"../mnist_model/weights/{address[i]}_torch_weights"+str(j)+".json", "r") as json_file:
@@ -88,7 +88,7 @@ def aggregate():
         aggregation_results[1] = weights[1]
         aggregation_results[2] = weights[2]
         aggregation_results[3] = weights[3]
-
+        logger.info('aggregator start compute')
         for i in range(4, len(weights), 4):
             aggregation_results[0] = [[element1 + element2 for element1, element2 in zip(sublist1, sublist2)] for sublist1, sublist2 in zip(aggregation_results[0], weights[i])]
         aggregation_results[0] = [[element / num for element in sublist] for sublist in aggregation_results[0]]
@@ -104,12 +104,12 @@ def aggregate():
         for i in range(7, len(weights), 4):
             aggregation_results[3] = [element1 + element2 for element1, element2 in zip(aggregation_results[3], weights[i])]
         aggregation_results[3] = [element / num for element in aggregation_results[3]]
-
+        logger.info('aggregator end compute')
         # Save results
         for i in range(len(aggregation_results)):
             with open("../mnist_model/weights/torch_weights"+str(i)+".json", "w") as json_file:
                 json.dump(aggregation_results[i], json_file)
-
+        logger.info('aggregator end')
         clients = clients_address()
 
         print(f"iterations: {iterations}")

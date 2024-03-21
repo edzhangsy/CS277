@@ -4,6 +4,8 @@ import subprocess
 import tenseal
 import ast
 import json
+import logging
+import os
 
 client_bp = Blueprint('client', __name__)
 
@@ -14,6 +16,10 @@ switch_address = None
 numClients = None
 clientIndex = None
 received_file_count = 0
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
+
 
 def init(config):
     global switch_address
@@ -58,9 +64,11 @@ def train():
     except subprocess.CalledProcessError as e:
         print(f"Error executing mnist_model.py: {e}")
 
+    logger.info('FHE client %d overhead start', clientIndex)
     # Encrypt and serialize
     results = encrypt_and_serialize()
-            
+    logger.info('FHE client %d overhead end', clientIndex)
+
     # Send the weights to the switch
     address = config["ip"]
     for i in range(4):
@@ -107,8 +115,10 @@ def continue_traning():
         except subprocess.CalledProcessError as e:
                 print(f"Error executing replace_weights_mnist.py: {e}")
 
+        logger.info('FHE client %d overhead start', clientIndex)
         # Encrypt and serialize
         results = encrypt_and_serialize()
+        logger.info('FHE client %d overhead end', clientIndex)
 
         for i in range(4):
             file_path = f"../mnist_model/weights/torch_weights{i}.pkl"

@@ -68,7 +68,7 @@ def aggregator_init():
     with open("./public_context.pkl", "wb") as f:
         f.write(public_context)
 
-    with open("./private_context.pkl", "wb") as f:
+    with open("./private_context.pkl", "rb") as f:
         files = {"file": ("./private_context.pkl", f.read())}
         requests.post("http://10.10.1.1:5000/setup_context_agg", files = files)
  

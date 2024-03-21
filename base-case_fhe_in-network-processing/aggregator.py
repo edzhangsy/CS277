@@ -100,7 +100,7 @@ def aggregate():
         aggregation_results[3] = bias1_enc + bias3_enc
         aggregation_results[3] = aggregation_results[3] * num
 
-        results_ser = {
+        results = {
             0: None,
             1: None,
             2: None,
@@ -108,15 +108,24 @@ def aggregate():
         }
 
         # Serialize weights
-        results_ser[0] = aggregation_results[0].serialize()
-        results_ser[1] = aggregation_results[1].serialize()
-        results_ser[2] = aggregation_results[2].serialize()
-        results_ser[3] = aggregation_results[3].serialize()
+        #results_ser[0] = aggregation_results[0].serialize()
+        #results_ser[1] = aggregation_results[1].serialize()
+        #results_ser[2] = aggregation_results[2].serialize()
+        #results_ser[3] = aggregation_results[3].serialize()
 
         # Save results
-        for i in range(len(results_ser)):
-            with open("../mnist_model/weights/torch_weights"+str(i)+".pkl", "wb") as f:
-                f.write(results_ser[i])
+        #for i in range(len(results_ser)):
+        #    with open("../mnist_model/weights/torch_weights"+str(i)+".pkl", "wb") as f:
+        #        f.write(results_ser[i])
+
+        results[0] = aggregation_results[0].decrypt(context.secret_key()).tolist()
+        results[1] = aggregation_results[1].decrypt(context.secret_key()).tolist()
+        results[2] = aggregation_results[2].decrypt(context.secret_key()).tolist()
+        results[3] = aggregation_results[3].decrypt(context.secret_key()).tolist()
+
+        for i in range(4):
+            with open(f"../mnist_model/weights/torch_weights{i}.json", "w") as f:
+                json.dump(results[i], f)
 
         clients = clients_address()
 
@@ -126,7 +135,7 @@ def aggregate():
             iterations -= 1
             for i in range(len(clients)):
                 for j in range(4):
-                    file_path = "../mnist_model/weights/torch_weights"+str(j)+".pkl"
+                    file_path = "../mnist_model/weights/torch_weights"+str(j)+".json"
                     with open(file_path, "rb") as f:
                         print(f"Aggregate sending to: {clients[i]}")
                         files = {"file" : (file_path, f.read())}

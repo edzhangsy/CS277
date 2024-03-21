@@ -28,7 +28,7 @@ def setup_context():
     file = request.files["file"]
     file.save(f"{file.filename}")
 
-    with open("./private_context.pkl", "rb") as f:
+    with open("./public_context.pkl", "rb") as f:
         context = tenseal.context_from(f.read())
 
     print(context.is_public())
@@ -88,7 +88,7 @@ def continue_traning():
         received_file_count = 0
 
         # Deserialize and remove encryption
-        remove_serialization_and_encryption()
+        #remove_serialization_and_encryption()
 
         command = ["python", "../mnist_model/replace_weights_mnist.py"]
 

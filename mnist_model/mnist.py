@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     lr = 1e-3
     bs = 64
-    epochs = 5
+    epochs = 10
 
     loss_fn = nn.CrossEntropyLoss()
 

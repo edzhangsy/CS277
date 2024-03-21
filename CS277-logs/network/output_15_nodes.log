@@ -1,0 +1,69 @@
+2024-03-21 08:01:59,602 Transmitted key of size 705697
+2024-03-21 08:02:00,103 Transmitted key of size 705697
+2024-03-21 08:02:00,602 Transmitted key of size 705697
+2024-03-21 08:02:01,104 Transmitted key of size 705697
+2024-03-21 08:02:01,601 Transmitted key of size 705697
+2024-03-21 08:02:02,098 Transmitted key of size 705697
+2024-03-21 08:02:02,591 Transmitted key of size 705697
+2024-03-21 08:02:03,115 Transmitted key of size 705697
+2024-03-21 08:02:03,646 Transmitted key of size 35471627
+2024-03-21 08:02:07,204 Transmitted key of size 35471627
+2024-03-21 08:02:10,772 Transmitted key of size 35471627
+2024-03-21 08:02:14,323 Transmitted key of size 35471627
+2024-03-21 08:02:17,869 Transmitted key of size 35471627
+2024-03-21 08:02:21,441 Transmitted key of size 35471627
+2024-03-21 08:02:24,999  * Debugger is active!
+2024-03-21 08:02:24,999  * Debugger PIN: 350-580-581
+2024-03-21 08:03:00,851 99.9.179.196 - - [21/Mar/2024 08:03:00] "GET /train HTTP/1.1" 200 -
+2024-03-21 08:18:55,616 Received file of size 1540334962
+2024-03-21 08:18:55,981 10.10.1.15 - - [21/Mar/2024 08:18:55] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:00,578 Received file of size 10696978
+2024-03-21 08:19:00,620 10.10.1.15 - - [21/Mar/2024 08:19:00] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:21,579 Received file of size 106972141
+2024-03-21 08:19:21,602 10.10.1.15 - - [21/Mar/2024 08:19:21] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:21,721 Received file of size 1540349654
+2024-03-21 08:19:21,938 Received file of size 3342872
+2024-03-21 08:19:21,941 10.10.1.15 - - [21/Mar/2024 08:19:21] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:22,019 10.10.1.14 - - [21/Mar/2024 08:19:22] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:23,180 Received file of size 10698193
+2024-03-21 08:19:23,183 10.10.1.14 - - [21/Mar/2024 08:19:23] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:32,540 Received file of size 106972079
+2024-03-21 08:19:32,567 10.10.1.14 - - [21/Mar/2024 08:19:32] "POST / HTTP/1.1" 200 -
+2024-03-21 08:19:32,905 Received file of size 3343270
+2024-03-21 08:19:32,905 Round 1 completed!
+2024-03-21 08:19:32,905 Round 2 has begun
+2024-03-21 08:19:32,905 FHE overhead start aggregator
+2024-03-21 08:20:08,060 FHE overhead end aggregator
+2024-03-21 08:20:08,061 Transmitted file of size 103334
+2024-03-21 08:20:08,062 Transmitted file of size 715
+2024-03-21 08:20:08,062 Transmitted file of size 7098
+2024-03-21 08:20:08,062 Transmitted file of size 220
+2024-03-21 08:20:08,063 Transmitted file of size 103334
+2024-03-21 08:20:08,063 Transmitted file of size 715
+2024-03-21 08:20:08,064 Transmitted file of size 7098
+2024-03-21 08:20:08,064 Transmitted file of size 220
+2024-03-21 08:20:08,065 Transmitted file of size 103334
+2024-03-21 08:20:08,065 Transmitted file of size 715
+2024-03-21 08:20:08,066 Transmitted file of size 7098
+2024-03-21 08:20:08,066 Transmitted file of size 220
+2024-03-21 08:20:08,067 Transmitted file of size 103334
+2024-03-21 08:20:08,068 Transmitted file of size 715
+2024-03-21 08:20:08,068 Transmitted file of size 7098
+2024-03-21 08:20:08,069 Transmitted file of size 220
+2024-03-21 08:20:08,070 Transmitted file of size 103334
+2024-03-21 08:20:08,071 Transmitted file of size 715
+2024-03-21 08:20:08,072 Transmitted file of size 7098
+2024-03-21 08:20:08,072 Transmitted file of size 220
+2024-03-21 08:20:08,073 Transmitted file of size 103334
+2024-03-21 08:20:08,073 Transmitted file of size 715
+2024-03-21 08:20:08,074 Transmitted file of size 7098
+2024-03-21 08:20:08,075 Transmitted file of size 220
+2024-03-21 08:20:08,075 Transmitted file of size 103334
+2024-03-21 08:20:08,076 Transmitted file of size 715
+2024-03-21 08:20:08,076 Transmitted file of size 7098
+2024-03-21 08:20:08,077 Transmitted file of size 220
+2024-03-21 08:20:08,078 Transmitted file of size 103334
+2024-03-21 08:20:08,078 Transmitted file of size 715
+2024-03-21 08:20:08,079 Transmitted file of size 7098
+2024-03-21 08:20:08,080 Transmitted file of size 220
+2024-03-21 08:20:08,300 10.10.1.14 - - [21/Mar/2024 08:20:08] "POST / HTTP/1.1" 200 -

@@ -1,0 +1,121 @@
+2024-03-21 04:46:55,371 Transmitted key of size 705089
+2024-03-21 04:46:55,871 Transmitted key of size 705089
+2024-03-21 04:46:56,366 Transmitted key of size 705089
+2024-03-21 04:46:56,865 Transmitted key of size 705089
+2024-03-21 04:46:57,344 Transmitted key of size 705089
+2024-03-21 04:46:57,875 Transmitted key of size 705089
+2024-03-21 04:46:58,375 Transmitted key of size 705089
+2024-03-21 04:46:58,869 Transmitted key of size 705089
+2024-03-21 04:46:59,405 Transmitted key of size 35481305
+2024-03-21 04:47:02,952 Transmitted key of size 35481305
+2024-03-21 04:47:06,578 Transmitted key of size 35481305
+2024-03-21 04:47:10,143 Transmitted key of size 35481305
+2024-03-21 04:47:13,727 Transmitted key of size 35481305
+2024-03-21 04:47:17,293 Transmitted key of size 35481305
+2024-03-21 04:47:20,892  * Debugger is active!
+2024-03-21 04:47:20,893  * Debugger PIN: 350-580-581
+2024-03-21 04:48:00,403 Training has begun
+2024-03-21 04:48:00,404 Round 1 has begun
+2024-03-21 04:48:00,409 99.9.179.196 - - [21/Mar/2024 04:48:00] "GET /train HTTP/1.1" 200 -
+2024-03-21 05:07:58,930 Received file of size 1540354942
+2024-03-21 05:07:59,222 10.10.1.14 - - [21/Mar/2024 05:07:59] "POST / HTTP/1.1" 200 -
+2024-03-21 05:08:06,614 Received file of size 10696867
+2024-03-21 05:08:06,617 10.10.1.14 - - [21/Mar/2024 05:08:06] "POST / HTTP/1.1" 200 -
+2024-03-21 05:09:13,262 Received file of size 106960963
+2024-03-21 05:09:13,286 10.10.1.14 - - [21/Mar/2024 05:09:13] "POST / HTTP/1.1" 200 -
+2024-03-21 05:09:15,883 Received file of size 3343326
+2024-03-21 05:09:15,886 10.10.1.14 - - [21/Mar/2024 05:09:15] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:18,437 Received file of size 1540354664
+2024-03-21 05:17:18,750 10.10.1.15 - - [21/Mar/2024 05:17:18] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:20,800 Received file of size 1540327324
+2024-03-21 05:17:21,125 10.10.1.15 - - [21/Mar/2024 05:17:21] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:29,059 Received file of size 10695362
+2024-03-21 05:17:29,063 10.10.1.15 - - [21/Mar/2024 05:17:29] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:30,426 Received file of size 10696903
+2024-03-21 05:17:30,429 10.10.1.15 - - [21/Mar/2024 05:17:30] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:39,597 Received file of size 1540347635
+2024-03-21 05:17:39,899 10.10.1.15 - - [21/Mar/2024 05:17:39] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:40,364 Received file of size 1540342257
+2024-03-21 05:17:40,671 10.10.1.15 - - [21/Mar/2024 05:17:40] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:42,861 Received file of size 1540346004
+2024-03-21 05:17:43,115 Received file of size 1540368848
+2024-03-21 05:17:43,164 10.10.1.14 - - [21/Mar/2024 05:17:43] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:43,415 10.10.1.14 - - [21/Mar/2024 05:17:43] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:43,416 Received file of size 1540361077
+2024-03-21 05:17:43,715 10.10.1.14 - - [21/Mar/2024 05:17:43] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:48,842 Received file of size 10697771
+2024-03-21 05:17:48,845 10.10.1.14 - - [21/Mar/2024 05:17:48] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:49,952 Received file of size 10697699
+2024-03-21 05:17:49,955 10.10.1.14 - - [21/Mar/2024 05:17:49] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:50,284 Received file of size 10695482
+2024-03-21 05:17:50,287 10.10.1.14 - - [21/Mar/2024 05:17:50] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:53,690 Received file of size 10695408
+2024-03-21 05:17:53,734 10.10.1.15 - - [21/Mar/2024 05:17:53] "POST / HTTP/1.1" 200 -
+2024-03-21 05:17:55,070 Received file of size 10697516
+2024-03-21 05:17:55,073 10.10.1.15 - - [21/Mar/2024 05:17:55] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:07,143 Received file of size 106967453
+2024-03-21 05:18:07,169 10.10.1.15 - - [21/Mar/2024 05:18:07] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:18,617 Received file of size 3343451
+2024-03-21 05:18:18,640 10.10.1.15 - - [21/Mar/2024 05:18:18] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:18,673 Received file of size 106972405
+2024-03-21 05:18:18,837 10.10.1.15 - - [21/Mar/2024 05:18:18] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:22,023 Received file of size 3343316
+2024-03-21 05:18:22,025 10.10.1.15 - - [21/Mar/2024 05:18:22] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:34,851 Received file of size 106970400
+2024-03-21 05:18:34,877 10.10.1.14 - - [21/Mar/2024 05:18:34] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:37,588 Received file of size 3342907
+2024-03-21 05:18:37,591 10.10.1.14 - - [21/Mar/2024 05:18:37] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:41,218 Received file of size 106972103
+2024-03-21 05:18:41,244 10.10.1.14 - - [21/Mar/2024 05:18:41] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:43,340 Received file of size 3342080
+2024-03-21 05:18:43,344 10.10.1.14 - - [21/Mar/2024 05:18:43] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:54,203 Received file of size 106966760
+2024-03-21 05:18:54,228 10.10.1.15 - - [21/Mar/2024 05:18:54] "POST / HTTP/1.1" 200 -
+2024-03-21 05:18:57,360 Received file of size 3343049
+2024-03-21 05:18:57,363 10.10.1.15 - - [21/Mar/2024 05:18:57] "POST / HTTP/1.1" 200 -
+2024-03-21 05:19:00,175 Received file of size 106970366
+2024-03-21 05:19:00,201 10.10.1.15 - - [21/Mar/2024 05:19:00] "POST / HTTP/1.1" 200 -
+2024-03-21 05:19:01,843 Received file of size 106965513
+2024-03-21 05:19:01,844 Received file of size 3342743
+2024-03-21 05:19:01,846 10.10.1.15 - - [21/Mar/2024 05:19:01] "POST / HTTP/1.1" 200 -
+2024-03-21 05:19:01,868 10.10.1.14 - - [21/Mar/2024 05:19:01] "POST / HTTP/1.1" 200 -
+2024-03-21 05:19:02,927 Received file of size 3342796
+2024-03-21 05:19:02,928 Round 1 completed!
+2024-03-21 05:19:02,928 Round 2 has begun
+2024-03-21 05:19:02,928 FHE overhead start aggregator
+2024-03-21 05:20:21,751 FHE overhead start aggregator compute
+2024-03-21 05:20:33,230 FHE overhead end aggregator compute
+2024-03-21 05:20:42,977 FHE overhead end aggregator
+2024-03-21 05:20:42,977 Transmitted file of size 103380
+2024-03-21 05:20:42,979 Transmitted file of size 717
+2024-03-21 05:20:42,979 Transmitted file of size 7101
+2024-03-21 05:20:42,979 Transmitted file of size 220
+2024-03-21 05:20:42,980 Transmitted file of size 103380
+2024-03-21 05:20:42,980 Transmitted file of size 717
+2024-03-21 05:20:42,980 Transmitted file of size 7101
+2024-03-21 05:20:42,981 Transmitted file of size 220
+2024-03-21 05:20:42,981 Transmitted file of size 103380
+2024-03-21 05:20:42,981 Transmitted file of size 717
+2024-03-21 05:20:42,982 Transmitted file of size 7101
+2024-03-21 05:20:42,982 Transmitted file of size 220
+2024-03-21 05:20:42,982 Transmitted file of size 103380
+2024-03-21 05:20:42,982 Transmitted file of size 717
+2024-03-21 05:20:42,983 Transmitted file of size 7101
+2024-03-21 05:20:42,983 Transmitted file of size 220
+2024-03-21 05:20:42,984 Transmitted file of size 103380
+2024-03-21 05:20:42,984 Transmitted file of size 717
+2024-03-21 05:20:42,988 Transmitted file of size 7101
+2024-03-21 05:20:42,988 Transmitted file of size 220
+2024-03-21 05:20:42,989 Transmitted file of size 103380
+2024-03-21 05:20:42,989 Transmitted file of size 717
+2024-03-21 05:20:42,989 Transmitted file of size 7101
+2024-03-21 05:20:42,989 Transmitted file of size 220
+2024-03-21 05:20:42,990 Transmitted file of size 103380
+2024-03-21 05:20:42,990 Transmitted file of size 717
+2024-03-21 05:20:42,990 Transmitted file of size 7101
+2024-03-21 05:20:42,991 Transmitted file of size 220
+2024-03-21 05:20:42,991 Transmitted file of size 103380
+2024-03-21 05:20:42,991 Transmitted file of size 717
+2024-03-21 05:20:42,991 Transmitted file of size 7101
+2024-03-21 05:20:42,992 Transmitted file of size 220
+2024-03-21 05:20:43,853 10.10.1.14 - - [21/Mar/2024 05:20:43] "POST / HTTP/1.1" 200 -

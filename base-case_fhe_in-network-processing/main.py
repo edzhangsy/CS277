@@ -6,12 +6,15 @@ import switch
 import aggregator
 import client
 import tenseal
+import logging
+import os
 
 app = Flask(__name__)
 
 # the current_bp store the pointer to the current blueprint
 current_type = None
 secret_key = None
+totalData = 0
 
 @app.route("/config", methods=['POST'])
 def config():
@@ -37,7 +40,13 @@ def log():
 
 def aggregator_init():
     global secret_key
+    global totalData
     print("aggregator start")
+
+    logger = logging.getLogger(__name__)
+    logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
+
+
     app.register_blueprint(aggregator.aggregator_bp)
     with open('./config.json', 'r') as file:
         aggregator.config = json.load(file)
@@ -78,10 +87,22 @@ def aggregator_init():
             if value["type"] == "client":
                 with open("./private_context.pkl", "rb") as f:
                     files = {"file": ("./public_context.pkl", f.read())}
+
+                    file_path = "./private_context.pkl"
+                    file_size = (os.stat(file_path)).st_size
+                    totalData += file_size
+                    logger.info('Transmitted key of size %d', file_size)
+
                     requests.post(f"http://{key}:5000/setup_context_t", files=files)
             elif value["type"] == "switch":
                 with open("./public_context.pkl", "rb") as f:
                     files = {"file": ("./public_context.pkl", f.read())}
+
+                    file_path = "./public_context.pkl"
+                    file_size = (os.stat(file_path)).st_size
+                    totalData += file_size
+                    logger.info('Transmitted key of size %d', file_size)
+
                     requests.post(f"http://{key}:5000/setup_context", files=files)
 
             response = requests.post(f"http://{key}:5000/config", json=value, timeout=0.5)

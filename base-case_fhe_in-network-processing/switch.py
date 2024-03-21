@@ -3,6 +3,8 @@ import ast
 import tenseal
 import requests
 import json
+import logging
+import os
 
 switch_bp = Blueprint('switch', __name__)
 
@@ -11,6 +13,10 @@ config = {}
 context = None
 address = None
 received_file_count = 0
+totalData = 0
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='output.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
 
 
 def init(config):
@@ -38,6 +44,8 @@ def add():
     global address
     global config
     global received_file_count
+    global localAddress
+    global totalData
     
     print("Switch Add")
     # Get files
@@ -45,6 +53,11 @@ def add():
     file.save(f"{file.filename}")
 
     received_file_count += 1
+
+    file_name = file.filename
+    file_size = (os.stat(file_name)).st_size
+    totalData += file_size
+    logger.info('Received file of size %d', file_size)
 
     receive_address = config["receive"]
 
@@ -55,6 +68,10 @@ def add():
         # Open files and get weights
         receive1 = receive_address[0]
         receive2 = receive_address[1]
+
+        localAddress = config["ip"]
+        logger.info('Network overhead start %s', localAddress)
+
         for i in range(4):
             with open(f"../mnist_model/weights/{receive1}_torch_weights"+str(i)+".pkl", "rb") as f:
                 if i == 0:
@@ -119,12 +136,19 @@ def add():
             with open(f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".pkl", "wb") as f:
                 f.write(results[i])
 
+        logger.info('Network overhead end %s', localAddress)
+
         # Send weights to next
         for i in range(4):
             file_path = f"../mnist_model/weights/{address2}_torch_weights"+str(i)+".pkl"
             with open(file_path, "rb") as f:
                 print(f"Switch send to: {address}")
                 files = {"file" : (file_path, f.read())}
+
+                file_size = (os.stat(file_path)).st_size
+                totalData += file_size
+                logger.info('Transmitted from switch file of size %d', file_size)
+
                 requests.post(f"http://{address}:5000/", files=files)
 
     return ""

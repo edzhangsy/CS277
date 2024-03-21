@@ -119,7 +119,7 @@ def aggregate():
         #        f.write(results_ser[i])
 
         results[0] = aggregation_results[0].decrypt(context.secret_key()).tolist()
-        results[1] = aggregstion_results[1].decrypt(context.secret_key()).tolist()
+        results[1] = aggregation_results[1].decrypt(context.secret_key()).tolist()
         results[2] = aggregation_results[2].decrypt(context.secret_key()).tolist()
         results[3] = aggregation_results[3].decrypt(context.secret_key()).tolist()
 

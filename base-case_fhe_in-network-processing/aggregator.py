@@ -123,7 +123,7 @@ def aggregate():
         results[2] = aggregation_results[2].decrypt(context.secret_key()).tolist()
         results[3] = aggregation_results[3].decrypt(context.secret_key()).tolist()
 
-        fir i in range(4):
+        for i in range(4):
             with open(f:"../mnist_modek/weights/torch_weights{i}.json", "w") as f:
                 json.dump(results[i], f)
 

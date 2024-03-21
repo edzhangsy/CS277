@@ -6,7 +6,7 @@ import sys
 def main(file):
 
     important = []
-    important_phrases = ["Training", "Round", "Received", "Transmitted", "Total", "aggregator"]
+    important_phrases = ["Round", "Received", "Transmitted"]
     with open(file) as f:
         f = f.readlines()
 
@@ -17,11 +17,10 @@ def main(file):
                 break
 
     #Begin to parse the valuable data
-    timestamp_str = '2024-03-21 02:57:56,432'
-    timestamp_format = '%Y-%m-%d %H:%M:%S,%f'
-
-    parsed_timestamp = datetime.strptime(timestamp_str, timestamp_format)
-    print(parsed_timestamp)
+    curr_round = 0
+    for line in important:
+        if "Round" in line:
+            
 
 
 

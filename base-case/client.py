@@ -30,9 +30,11 @@ def init(config):
 def train():
     global switch_address
     global config
+    global numClients
+    global clientIndex
 
     print("Client Train")
-    command = ["python", "../mnist_model/mnist.py", "numClients", "clientIndex"]
+    command = ["python", "../mnist_model/mnist.py", numClients, clientIndex]
 
     try:
         subprocess.run(command, check=True)

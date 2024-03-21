@@ -124,7 +124,7 @@ def aggregate():
         results[3] = aggregation_results[3].decrypt(context.secret_key()).tolist()
 
         for i in range(4):
-            with open(f:"../mnist_modek/weights/torch_weights{i}.json", "w") as f:
+            with open(f"../mnist_modek/weights/torch_weights{i}.json", "w") as f:
                 json.dump(results[i], f)
 
         clients = clients_address()

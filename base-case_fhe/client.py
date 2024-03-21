@@ -28,7 +28,7 @@ def setup_context():
     file = request.files["file"]
     file.save(f"{file.filename}")
 
-    with open("./private_context.pkl", "rb") as f:
+    with open("./public_context.pkl", "rb") as f:
         context = tenseal.context_from(f.read())
 
     print(context.is_public())

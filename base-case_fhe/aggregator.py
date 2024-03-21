@@ -14,6 +14,18 @@ iterations = 0
 received_file_count = 0
 pool = Pool(16)
 
+@aggregator_bp.route("/setup_context_agg", methods=["POST"])
+def setup():
+    global context
+
+    file = request.files["file"]
+    file.save("f:{file.filename}")
+
+    with open("./private_key.pkl", "rb") as f:
+        context = tenseal.context_from(f.read())
+
+    return ""
+
 @aggregator_bp.route("/train")
 def train():
     global config

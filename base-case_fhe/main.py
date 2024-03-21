@@ -58,7 +58,7 @@ def aggregator_init():
 
     private_context = context.serialize(save_secret_key=True)
     
-    #secret_key = context.secret_key()
+    secret_key = context.secret_key()
     copy.make_context_public()
     public_context = copy.serialize()
 
@@ -67,6 +67,10 @@ def aggregator_init():
 
     with open("./public_context.pkl", "wb") as f:
         f.write(public_context)
+
+    with open("./private_context.pkl", "wb") as f:
+        files = {"file": ("./private_context.pkl", f.read())}
+        requests.post("http://10.10.1.1:5000/setup_context_agg", files = files)
  
  # call the others
     #print(aggregator.config)

@@ -6,7 +6,7 @@ import sys
 def main(file):
 
     important = []
-    important_phrases = ["Training", "Round", "Received", "Transmitted", "Total"]
+    important_phrases = ["Training", "Round", "Received", "Transmitted", "Total", "aggregator"]
     with open(file) as f:
         f = f.readlines()
 
@@ -16,7 +16,17 @@ def main(file):
                 important.append(line)
                 break
 
-    print(important)
+    #Begin to parse the valuable data
+    
+
+
+
+
+
+
+
+    for line in important:
+        print(line)
     return
 
 if __name__ == "__main__":
